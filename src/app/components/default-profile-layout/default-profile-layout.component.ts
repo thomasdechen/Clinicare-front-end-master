@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ToastrService } from 'ngx-toastr'; // Importar o ToastrService
 
 @Component({
   selector: 'app-default-profile-layout',
@@ -13,13 +14,21 @@ export class DefaultProfileLayoutComponent {
   @Output() onSave = new EventEmitter<void>();
   @Output() onNavigate = new EventEmitter<void>();
 
-  constructor() {}
+  constructor(private toastr: ToastrService) {}
 
   saveProfile() {
     this.onSave.emit();
   }
 
-  navigate() {
-    this.onNavigate.emit();
+  logout() {
+    
+    sessionStorage.setItem('logout-message', 'Logout realizado com sucesso!');
+
+    // Limpar a session storage
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('id');
+
+    window.location.href = '/login';
   }
 }

@@ -79,6 +79,17 @@ main {
         h2 {
           margin-bottom: 20px;
         }
+
+        .btn-logout {
+          background-color: black;
+          color: white;
+          cursor: pointer;
+          margin-top: 20px;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 4px;
+          font-size: 16px;
+        }      
   
         .btn-save {
           margin-top: 20px;

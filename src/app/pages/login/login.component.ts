@@ -34,11 +34,20 @@ export class LoginComponent {
     private loginService: LoginService,
     private toastService: ToastrService
   ){
+    
 
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)])
     })
+  }
+
+  ngOnInit(): void {
+    const logoutMessage = sessionStorage.getItem('logout-message');
+    if (logoutMessage) {
+      this.toastService.success(logoutMessage, 'Logout');
+      sessionStorage.removeItem('logout-message'); // Limpar a mensagem depois de exibir
+    }
   }
 
   submit(){//subscribe pega a resposta da requisição
@@ -47,7 +56,7 @@ export class LoginComponent {
         this.toastService.success("Login feito com sucesso!");
         this.router.navigate(["/profile"]);
       },
-      error: () => this.toastService.error("Erro inesperado! Tente novamente mais tarde")
+      error: () => this.toastService.error("E-mail ou senha incorretos!")
     }) 
     
   }

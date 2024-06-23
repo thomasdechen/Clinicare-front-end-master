@@ -7,6 +7,7 @@ import { PrimaryInputComponent } from '../../components/primary-input/primary-in
 import { UserService } from '../../services/user.service';
 import { LoginResponse } from '../../types/login-response';
 import { DefaultProfileLayoutComponent } from '../../components/default-profile-layout/default-profile-layout.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +30,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private router: Router
   ) {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -78,5 +80,15 @@ export class ProfileComponent implements OnInit {
 
   navigateToHome(): void {
     // Implementar a navegação para outra página (por exemplo, página inicial)
+  }
+
+  logout(): void {
+    // Limpar session storage
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('id');
+
+    // Redirecionar para a página de login
+    this.router.navigate(['/login']);
   }
 }

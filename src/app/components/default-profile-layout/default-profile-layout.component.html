@@ -12,9 +12,6 @@
           <li><a href="#">Contato</a></li>
         </ul>
       </section>
-      <section class="entrar col-3">
-        <a (click)="navigate()" class="entrar-button">Sair</a>
-      </section>
     </div>
   </header>
 
@@ -27,6 +24,9 @@
       <ng-content></ng-content>
       <button class="btn-save" (click)="saveProfile()" [disabled]="disablePrimaryBtn">
         {{ primaryBtnText }}
+      </button>
+      <button class="btn-logout" (click)="logout()">
+        Sair
       </button>
     </section>
   </section>
