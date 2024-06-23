@@ -17,8 +17,33 @@
         </section>
     </div>
 </header>
+<!-- Section perfil -->
 
-  <section class="content">
+<section class="perfil">
+  <section class="esquerda-perfil">
+    <img src="" alt="">
+    <p>Nome</p>
+    <p>E-mail</p>
+    <p>Tipo Sanguíneo</p>
+    <button class="btn-save" (click)="saveProfile()" [disabled]="disablePrimaryBtn">
+      {{ primaryBtnText }}
+    </button>
+    <button class="btn-logout" (click)="logout()">
+      Sair
+    </button>
+  </section>
+
+  <section class="direita-perfil">
+    <div class="menu-perfil"></div>
+    <h2>{{ title }}</h2>
+      <ng-content></ng-content>
+  </section>
+</section>
+
+<!-- Section perfil -->
+
+
+  <!-- <section class="content">
     <section class="profile">
       <h2>{{ title }}</h2>
       <ng-content></ng-content>
@@ -29,5 +54,5 @@
         Sair
       </button>
     </section>
-  </section>
+  </section> -->
 </main>
