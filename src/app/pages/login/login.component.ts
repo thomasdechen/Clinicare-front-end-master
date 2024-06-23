@@ -62,7 +62,7 @@ export class LoginComponent {
   }
 
   navigate(){
-    this.router.navigate(["user"])
+    this.router.navigate(["signup"])
   }
 
   entrar(){

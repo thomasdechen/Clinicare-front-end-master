@@ -13,6 +13,8 @@ export class DefaultProfileLayoutComponent {
   @Input() disablePrimaryBtn: boolean = true;
   @Output() onSave = new EventEmitter<void>();
   @Output() onNavigate = new EventEmitter<void>();
+  @Output("submit") onSubmit = new EventEmitter();
+  @Output("entrar") onEntrar = new EventEmitter();
 
   constructor(private toastr: ToastrService) {}
 
@@ -31,4 +33,17 @@ export class DefaultProfileLayoutComponent {
 
     window.location.href = '/login';
   }
+
+  submit(){
+    this.onSubmit.emit();
+  }
+
+  navigate(){
+    this.onNavigate.emit();
+  }
+
+  entrar(){
+    this.onEntrar.emit();
+  }
+
 }

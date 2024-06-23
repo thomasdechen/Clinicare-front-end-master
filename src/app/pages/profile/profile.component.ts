@@ -91,4 +91,12 @@ export class ProfileComponent implements OnInit {
     // Redirecionar para a página de login
     this.router.navigate(['/login']);
   }
+
+  navigate(){
+    this.router.navigate(["signup"])
+  }
+
+  entrar(){
+    this.router.navigate(["user"])
+  }
 }

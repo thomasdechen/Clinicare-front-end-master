@@ -1,62 +1,90 @@
-/* Estilos para o layout do perfil padrão */
+@import "../../../styles/variables.scss";
 
 main {
-    header {
-      .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+  height: 100%;
+
+  // Header 
+  header {
+      width: 100%;
+      margin-top: 20px;
+  }
+
+  .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+  }
+
+  header a {
+      font-family: 'Outfit400', sans-serif;
+      font-size: 20px;
+      color: $text-color;
+      text-decoration: none;
+      transition: color 0.3s ease; 
+  }
+
+  .logo {
+      margin-right: 100px; 
+  }
+
+  .logo img {
+      max-width: 100%;
+      height: auto;
+  }
+
+  .nav-items ul,
+  .login ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  }
+
+  .nav-items ul li,
+  .login ul li {
+      display: inline;
+      margin-right: 20px;
+  }
+
+  .nav-items ul li:last-child,
+  .login ul li:last-child {
+      margin-right: 0;
+  }
+
+  .nav-items {
+      margin-right: auto;
+  }
+
+  .nav-items ul li {
+      padding: 0px 15px;
+  }
+
+  .nav-items ul li a:hover {
+      color: $primary-color; 
+  }
   
-        .logo {
-          flex: 1;
-  
-          img {
-            max-width: 100%;
-          }
-        }
-  
-        .nav-items {
-          flex: 2;
-          text-align: center;
-  
-          #nav-mid {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-  
-            li {
-              margin: 0 15px;
-  
-              a {
-                text-decoration: none;
-                color: #333;
-  
-                &:hover {
-                  text-decoration: underline;
-                }
-              }
-            }
-          }
-        }
-  
-        .entrar {
-          flex: 1;
-          text-align: right;
-  
-          .entrar-button {
-            text-decoration: none;
-            color: #007bff;
-            cursor: pointer;
-  
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-        }
-      }
-    }
+
+  .entrar {
+      margin-left: auto;
+  }
+
+  .entrar a {
+      color: $secondary-text-color;
+  }
+
+  .entrar-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: $primary-color; 
+      text-decoration: none; 
+      border-radius: 20px;
+  }
+
+  .entrar-button:hover {
+      background-color: rgb(3, 91, 185);
+  }
+///////////////////////////
   
     .content {
       display: flex;
