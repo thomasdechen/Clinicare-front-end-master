@@ -1,0 +1,33 @@
+<main>
+  <header>
+    <div class="container">
+      <section class="logo col-3">
+        <a href="#"><img src="assets/svg/logo.svg" alt="logo" /></a>
+      </section>
+      <section class="nav-items col-6">
+        <ul id="nav-mid">
+          <li><a href="#">Início</a></li>
+          <li><a href="#">Serviços</a></li>
+          <li><a href="#">Médicos(as)</a></li>
+          <li><a href="#">Contato</a></li>
+        </ul>
+      </section>
+      <section class="entrar col-3">
+        <a (click)="navigate()" class="entrar-button">Sair</a>
+      </section>
+    </div>
+  </header>
+
+  <section class="content">
+    <section class="image-section">
+      <img src="assets/svg/Médica 3 1.svg" alt="Profile Image">
+    </section>
+    <section class="profile">
+      <h2>{{ title }}</h2>
+      <ng-content></ng-content>
+      <button class="btn-save" (click)="saveProfile()" [disabled]="disablePrimaryBtn">
+        {{ primaryBtnText }}
+      </button>
+    </section>
+  </section>
+</main>

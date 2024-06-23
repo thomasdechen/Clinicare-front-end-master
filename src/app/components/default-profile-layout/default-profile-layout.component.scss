@@ -1,0 +1,101 @@
+/* Estilos para o layout do perfil padrão */
+
+main {
+    header {
+      .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+  
+        .logo {
+          flex: 1;
+  
+          img {
+            max-width: 100%;
+          }
+        }
+  
+        .nav-items {
+          flex: 2;
+          text-align: center;
+  
+          #nav-mid {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+  
+            li {
+              margin: 0 15px;
+  
+              a {
+                text-decoration: none;
+                color: #333;
+  
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+            }
+          }
+        }
+  
+        .entrar {
+          flex: 1;
+          text-align: right;
+  
+          .entrar-button {
+            text-decoration: none;
+            color: #007bff;
+            cursor: pointer;
+  
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+  
+      .image-section {
+        flex: 1;
+  
+        img {
+          max-width: 100%;
+        }
+      }
+  
+      .profile {
+        flex: 1;
+        padding: 20px;
+  
+        h2 {
+          margin-bottom: 20px;
+        }
+  
+        .btn-save {
+          margin-top: 20px;
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+          border-radius: 4px;
+          font-size: 16px;
+  
+          &:disabled {
+            background-color: #d6d6d6;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+  

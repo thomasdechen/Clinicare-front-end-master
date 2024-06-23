@@ -1,0 +1,43 @@
+<app-default-profile-layout
+  title="Perfil do Usuário"
+  primaryBtnText="Salvar"
+  [disablePrimaryBtn]="profileForm.invalid"
+  (onSave)="updateProfile()"
+  (onNavigate)="navigateToHome()"
+>
+  <div class="profile-container">
+    <form [formGroup]="profileForm">
+      <app-primary-input
+        label="Nome"
+        inputName="name"
+        type="text"
+        placeholder="Seu nome"
+        formControlName="name"
+      ></app-primary-input>
+
+      <app-primary-input
+        label="Email"
+        inputName="email"
+        type="email"
+        placeholder="Seu email"
+        formControlName="email"
+      ></app-primary-input>
+
+      <app-primary-input
+        label="Senha"
+        inputName="password"
+        type="password"
+        placeholder="Sua senha"
+        formControlName="password"
+      ></app-primary-input>
+
+      <app-primary-input
+        label="Gênero"
+        inputName="gender"
+        type="text"
+        placeholder="Seu gênero"
+        formControlName="gender"
+      ></app-primary-input>
+    </form>
+  </div>
+</app-default-profile-layout>

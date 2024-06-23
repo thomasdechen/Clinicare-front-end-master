@@ -1,0 +1,26 @@
+@import 'ngx-toastr/toastr';
+
+@font-face {
+    font-family: "Outfit400";
+    src: url(./assets/fonts/Outfit-VariableFont_wght.ttf) format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Outfit600";
+    src: url('./assets/fonts/Outfit-VariableFont_wght.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Outfit", sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
