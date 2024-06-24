@@ -7,7 +7,7 @@
       <section class="nav-items col-6">
         <ul id="nav-mid">
           <li><a href="#">Início</a></li>
-          <li><a href="#">Serviços</a></li>
+          <li><a href="/servicos">Serviços</a></li>
           <li><a href="#">Médicos(as)</a></li>
           <li><a href="#">Contato</a></li>
         </ul>
@@ -22,10 +22,10 @@
 
   <section class="perfil">
     <section class="esquerda-perfil">
-      <img class="profile-image" src="../../../assets/svg/Usuario_logado.svg" alt="Foto de perfil">
-      <p id="nome">Nome</p>
-      <p>E-mail</p>
-      <p>Tipo Sanguíneo</p>
+      <img class="profile-image" [src]="userProfile.foto || 'caminho/para/imagem/default'" alt="Foto de perfil">
+      <p id="nome">{{ userProfile.name }}</p>
+      <p>{{ userProfile.email }}</p>
+      <p>Tipo Sanguíneo: {{ userProfile.sangue }}</p>
       <div class="btn-perfil">
         <button class="btn-logout" (click)="logout()">
           Sair
@@ -38,12 +38,14 @@
 
     <section class="direita-perfil">
       <div class="menu-perfil">
-          <button class="btn-agend">
+          <a href="/profile2"><button class="btn-agend">
             Meus Agendamentos
           </button>
-          <button class="btn-info">
+        </a>
+          <a href="/profile"><button class="btn-info">
             Perfil(Informações)
           </button>
+        </a>
       </div>
       <div class="form-perfil">
         <h2>{{ title }}</h2>

@@ -161,11 +161,6 @@ main {
       width: 18%;
     }
 
-    .esquerda-perfil img {
-      width: 80%;
-      border-radius: 50%;
-    }
-
     .esquerda-perfil * {
       padding: 5px 0px;
     }
@@ -285,13 +280,14 @@ main {
   .btn-info:hover {
     background-color: #0f0f0f;
   }
-  
-  .profile-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 100%; /* Torna a imagem redonda */
-    object-fit: cover; /* Ajusta a imagem para cobrir totalmente o espaço disponível */
-  }
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%; /* Torna a imagem redonda */
+  object-fit: cover; /* Ajusta a imagem para cobrir totalmente o espaço disponível */
+}
+
   
   
     //Perfil

@@ -9,6 +9,7 @@ import { LoginResponse } from '../../types/login-response';
 import { DefaultProfileLayoutComponent } from '../../components/default-profile-layout/default-profile-layout.component';
 import { Router } from '@angular/router';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { DefaultProfileLayoutModule } from '../../components/default-profile-layout/default-profile-layout.module';
 
 @Component({
   selector: 'app-profile',
@@ -20,10 +21,10 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     ReactiveFormsModule,
     HttpClientModule,
     ToastrModule,
-    DefaultProfileLayoutComponent,
     NgxMaskDirective,
     NgxMaskPipe,
-    PrimaryInputComponent
+    PrimaryInputComponent,
+    DefaultProfileLayoutModule
   ],
   providers: [provideNgxMask()]
 })
@@ -84,11 +85,15 @@ export class ProfileComponent implements OnInit {
     this.userService.updateUserProfile(profileData).subscribe({
       next: () => {
         this.toastService.success('Perfil atualizado com sucesso!');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       },
       error: () => {
         this.toastService.error('Erro ao atualizar perfil, digite a senha corretamente!');
       }
     });
+    
   }
 
   navigateToHome(): void {
