@@ -33,4 +33,6 @@ export class UserService {
     });
     return this.http.put<any>(`${this.apiUrl}/profile/${id}`, profileData, { headers });
   }
+
+  
 }

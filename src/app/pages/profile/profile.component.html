@@ -1,43 +1,121 @@
-<app-default-profile-layout
+<!-- profile.component.html -->
+
+<app-default-profile-layout 
   title="Informações do Perfil"
-  primaryBtnText="Salvar"
+  primaryBtnText="Atualizar Perfil"
   [disablePrimaryBtn]="profileForm.invalid"
   (onSave)="updateProfile()"
   (onNavigate)="navigateToHome()"
 >
+
+
   <div class="profile-container">
     <form [formGroup]="profileForm">
-      <app-primary-input
-        label="Nome"
-        inputName="name"
-        type="text"
-        placeholder="Seu nome"
-        formControlName="name"
-      ></app-primary-input>
 
-      <app-primary-input
-        label="Email"
-        inputName="email"
-        type="email"
-        placeholder="Seu email"
-        formControlName="email"
-      ></app-primary-input>
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input 
+          id="name" 
+          type="text" 
+          class="form-control" 
+          placeholder="Seu nome" 
+          formControlName="name"
+        />
+      </div>
 
-      <app-primary-input
-        label="Senha"
-        inputName="password"
-        type="password"
-        placeholder="Sua senha"
-        formControlName="password"
-      ></app-primary-input>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          id="email" 
+          type="email" 
+          class="form-control" 
+          placeholder="Seu email" 
+          formControlName="email"
+        />
+      </div>
 
-      <app-primary-input
-        label="Gênero"
-        inputName="gender"
-        type="text"
-        placeholder="Seu gênero"
-        formControlName="gender"
-      ></app-primary-input>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input 
+          id="password" 
+          type="password" 
+          class="form-control" 
+          placeholder="Sua senha" 
+          formControlName="password"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="cpf">CPF</label>
+        <input 
+          id="cpf" 
+          type="text" 
+          class="form-control" 
+          placeholder="Seu CPF" 
+          formControlName="cpf"
+          mask="000.000.000-00"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input 
+          id="telefone" 
+          type="text" 
+          class="form-control" 
+          placeholder="Seu telefone" 
+          formControlName="telefone"
+          mask="(00) 00000-0000"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="datanasc">Data de Nascimento</label>
+        <input 
+          id="datanasc" 
+          type="text" 
+          class="form-control" 
+          placeholder="Sua data de nascimento" 
+          formControlName="datanasc"
+          mask="00/00/0000"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="name">Foto</label>
+        <input 
+          id="foto" 
+          type="text" 
+          class="form-control" 
+          placeholder="Foto(URL)" 
+          formControlName="foto"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="sangue">Tipo Sanguíneo</label>
+        <select id="sangue" formControlName="sangue">
+          <option value="" disabled selected>Selecionar</option>
+          <option value="A+">A+</option>
+          <option value="B+">B+</option>
+          <option value="AB+">AB+</option>
+          <option value="O+">O+</option>
+          <option value="A-">A-</option>
+          <option value="B-">B-</option>
+          <option value="AB-">AB-</option>
+          <option value="O-">O-</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gênero</label>
+        <select id="gender" formControlName="gender">
+          <option value="" disabled selected>Selecionar</option>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+        </select>
+      </div>
+
     </form>
   </div>
 </app-default-profile-layout>

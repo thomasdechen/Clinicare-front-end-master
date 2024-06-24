@@ -3,5 +3,9 @@ export interface User {
     name: string;
     email: string;
     password: string;
-    gender: string;
+    cpf: string;
+    telefone: string;
+    datanasc: string;
+    foto: string;
+    sangue: string;
 }
