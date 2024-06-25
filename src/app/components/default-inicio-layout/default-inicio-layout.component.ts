@@ -4,11 +4,11 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-default-login-layout',
-  templateUrl: './default-login-layout.component.html',
-  styleUrl: './default-login-layout.component.scss'
+  selector: 'app-default-inicio-layout',
+  templateUrl: './default-inicio-layout.component.html',
+  styleUrl: './default-inicio-layout.component.scss'
 })
-export class DefaultLoginLayoutComponent implements OnInit {
+export class DefaultInicioLayoutComponent implements OnInit {
   @Input() title: string = "";
   @Input() primaryBtnText: string = "";
   @Input() secondaryBtnText: string = "";

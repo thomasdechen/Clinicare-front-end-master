@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { UserService } from '../../services/user.service'; 
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-default-profile-layout',
@@ -17,11 +18,19 @@ export class DefaultProfileLayoutComponent implements OnInit {
   @Output("entrar") onEntrar = new EventEmitter<void>();
 
   userProfile: any = {}; // Objeto para armazenar os dados do perfil do usuário
+  isLoggedIn: boolean = false; // Flag para verificar se o usuário está logado
 
-  constructor(private toastr: ToastrService, private userService: UserService) {}
+  constructor(private toastr: ToastrService, private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
-    this.fetchUserProfile();
+    this.checkLoginStatus();
+    if (this.isLoggedIn) {
+      this.fetchUserProfile();
+    }
+  }
+
+  checkLoginStatus() {
+    this.isLoggedIn = !!sessionStorage.getItem('auth-token');
   }
 
   fetchUserProfile() {
@@ -58,5 +67,9 @@ export class DefaultProfileLayoutComponent implements OnInit {
 
   entrar() {
     this.onEntrar.emit();
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
   }
 }

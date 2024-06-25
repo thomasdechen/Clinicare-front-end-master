@@ -79,6 +79,7 @@ main {
         background-color: $primary-color; 
         text-decoration: none; 
         border-radius: 20px;
+        cursor: pointer;
     }
 
     .entrar-button:hover {
@@ -167,4 +168,12 @@ main {
     .form-section {
 
     }
+
+    .profile-image-header {
+        width: 70px;
+        height: 70px;
+        border-radius: 100%; 
+        object-fit: cover; 
+        cursor: pointer;
+      }
 }

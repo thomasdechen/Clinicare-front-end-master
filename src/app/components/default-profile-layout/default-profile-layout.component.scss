@@ -79,6 +79,7 @@ main {
       background-color: $primary-color; 
       text-decoration: none; 
       border-radius: 20px;
+      cursor: pointer;
   }
 
   .entrar-button:hover {
@@ -284,8 +285,16 @@ main {
 .profile-image {
   width: 100px;
   height: 100px;
-  border-radius: 100%; /* Torna a imagem redonda */
-  object-fit: cover; /* Ajusta a imagem para cobrir totalmente o espaço disponível */
+  border-radius: 100%; 
+  object-fit: cover; 
+}
+
+.profile-image-header {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%; 
+  object-fit: cover; 
+  cursor: pointer;
 }
 
   

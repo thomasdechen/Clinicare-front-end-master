@@ -15,8 +15,23 @@ export class AuthGuard implements CanActivate {
     const authToken = sessionStorage.getItem('auth-token');
 
     if (authToken) {
+      if (state.url === '/login') {
+        this.router.navigate(['/profile']);
+        return false;
+      }
+      if (state.url === '/signup') {
+        this.router.navigate(['/profile']);
+        return false;
+      }
       return true;
     } else {
+      if (state.url === '/login') {
+        return true;
+      }
+      if (state.url === '/signup') {
+        return true;
+      }
+      // Usuário não logado, redirecionar para a página de login
       this.router.navigate(['/login']);
       return false;
     }

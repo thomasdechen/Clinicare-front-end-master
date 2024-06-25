@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { DefaultLoginLayoutComponent } from '../../components/default-login-layout/default-login-layout.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PrimaryInputComponent } from '../../components/primary-input/primary-input.component';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
+import { DefaultLoginLayoutModule } from '../../components/default-login-layout/default-login-layout.module';
 
 interface LoginForm {
   email: FormControl,
@@ -15,7 +15,7 @@ interface LoginForm {
   selector: 'app-login',
   standalone: true,
   imports: [
-    DefaultLoginLayoutComponent,
+    DefaultLoginLayoutModule,
     ReactiveFormsModule,
     PrimaryInputComponent
   ],
@@ -48,6 +48,19 @@ export class LoginComponent {
       this.toastService.success(logoutMessage, 'Logout');
       sessionStorage.removeItem('logout-message'); // Limpar a mensagem depois de exibir
     }
+
+    const authToken = sessionStorage.getItem('auth-token');
+    if (authToken) {
+      // Usuário já está logado, redirecionar para a página de perfil
+      this.router.navigate(['/profile']);
+    }
+  }
+
+  login() {
+    // Sua lógica de autenticação aqui
+    const token = 'fake-jwt-token';
+    sessionStorage.setItem('auth-token', token);
+    this.router.navigate(['/profile']);
   }
 
   submit(){//subscribe pega a resposta da requisição

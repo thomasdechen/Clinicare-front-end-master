@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DefaultServicosLayoutModule } from '../../components/default-servicos-layout/default-servicos-layout.module';
+import { DefaultInicioLayoutModule } from '../../components/default-inicio-layout/default-inicio-layout.module';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-servicos',
+  selector: 'app-inicio',
   standalone: true,
-  imports: [DefaultServicosLayoutModule, ReactiveFormsModule],
-  templateUrl: './servicos.component.html',
-  styleUrl: './servicos.component.scss'
+  imports: [DefaultInicioLayoutModule,
+  ReactiveFormsModule],
+  templateUrl: './inicio.component.html',
+  styleUrl: './inicio.component.scss'
 })
-export class ServicosComponent {
+export class InicioComponent {
 
   constructor(private router: Router) {}
 
@@ -21,5 +22,6 @@ export class ServicosComponent {
   entrar(){
     this.router.navigate(["login"])
   }
+
 
 }

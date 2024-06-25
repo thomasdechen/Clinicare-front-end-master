@@ -59,6 +59,23 @@
           </div>
         </div>
       </div>
+
+      <div class="form-group">
+        <label for="cpf">Cpf</label>
+        <div class="input-content">
+          <input 
+            id="cpf" 
+            type="text" 
+            class="form-control" 
+            placeholder="Seu CPF" 
+            formControlName="cpf"
+            mask="000.000.000-00"
+          />
+          <div class="icon">
+            <ng-content></ng-content>
+          </div>
+        </div>
+      </div>
       
       <div class="form-group">
         <label for="telefone">Telefone</label>
