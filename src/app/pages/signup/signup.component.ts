@@ -33,7 +33,6 @@ interface SignupForm {
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
-
   signupForm: FormGroup<SignupForm>;
 
   constructor(
@@ -46,8 +45,8 @@ export class SignupComponent {
       email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
       password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
       passwordConfirm: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
-      role: new FormControl('paciente', { nonNullable: true, validators: [Validators.required]}),
-      gender: new FormControl('', { nonNullable: true, validators: [Validators.required]}),
+      role: new FormControl('paciente', { nonNullable: true, validators: [Validators.required] }),
+      gender: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
       codigo: new FormControl<string | null>(null) // Inicializa com null e permite strings
     }, { validators: this.passwordMatchValidator });
   }
@@ -64,7 +63,7 @@ export class SignupComponent {
       this.toastService.error("Por favor, preencha todos os campos corretamente.");
       return;
     }
-  
+
     const { name, email, password, role, gender, codigo } = this.signupForm.getRawValue();
     this.loginService.signup(name, email, password, role, gender, codigo).subscribe({
       next: () => {
@@ -74,7 +73,6 @@ export class SignupComponent {
       error: (error) => this.toastService.error(error.error || "Erro inesperado! Tente novamente mais tarde")
     });
   }
-  
 
   navigate() {
     this.router.navigate(["/login"]);

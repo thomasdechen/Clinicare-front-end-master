@@ -40,14 +40,16 @@ export class ProfileComponent implements OnInit {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      password: new FormControl('', [Validators.minLength(6)]),
       role: new FormControl(''),
       gender: new FormControl(''),
       cpf: new FormControl('', [Validators.pattern(/^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$/)]),
       telefone: new FormControl(''),
       datanasc: new FormControl(''),
       sangue: new FormControl(''),
-      foto: new FormControl('')
+      foto: new FormControl(''),
+      crm: new FormControl(''),
+      endereco: new FormControl(''),
     });
   }
 
@@ -64,11 +66,13 @@ export class ProfileComponent implements OnInit {
           email: profile.email,
           role: profile.role,
           gender: profile.gender,
-          cpf: profile.cpf,
+          cpf: profile.cpf,  // Verifique se os campos condicionais estão sendo corretamente mapeados
           telefone: profile.telefone,
           datanasc: profile.datanasc,
           sangue: profile.sangue,
-          foto: profile.foto
+          foto: profile.foto,
+          crm: profile.crm,
+          endereco: profile.endereco 
         });
       },
       error: (err) => {
@@ -76,6 +80,8 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+  
+  
 
   updateProfile(): void {
     const profileData = this.profileForm.value;
@@ -93,8 +99,8 @@ export class ProfileComponent implements OnInit {
         this.toastService.error('Erro ao atualizar perfil, digite a senha corretamente!');
       }
     });
-    
   }
+  
 
   navigateToHome(): void {
     // Implementar a navegação para outra página (por exemplo, página inicial)
@@ -105,6 +111,7 @@ export class ProfileComponent implements OnInit {
     sessionStorage.removeItem('auth-token');
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('id');
+    sessionStorage.removeItem('role');
 
     // Armazenar a mensagem de logout na sessionStorage
     sessionStorage.setItem('logout-message', 'Logout realizado com sucesso!');
@@ -113,7 +120,7 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  navigate() {
+  navigate(): void {
     this.router.navigate(["signup"]);
   }
 }

@@ -1,5 +1,3 @@
-<!-- profile.component.html -->
-
 <app-default-profile-layout 
   title="Informações do Perfil"
   primaryBtnText="Atualizar Perfil"
@@ -7,26 +5,24 @@
   (onSave)="updateProfile()"
   (onNavigate)="navigateToHome()"
 >
-
-
   <div class="profile-container">
     <form [formGroup]="profileForm">
 
       <div class="form-group">
         <label for="name">Nome</label>
         <div class="input-content">
-        <input 
-          id="name" 
-          type="text" 
-          class="form-control" 
-          placeholder="Seu nome" 
-          formControlName="name"
-        />
-        <div class="icon">
-          <ng-content></ng-content>
+          <input 
+            id="name" 
+            type="text" 
+            class="form-control" 
+            placeholder="Seu nome" 
+            formControlName="name"
+          />
+          <div class="icon">
+            <ng-content></ng-content>
+          </div>
         </div>
       </div>
-    </div>
 
       <div class="form-group">
         <label for="email">Email</label>
@@ -60,8 +56,8 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="cpf">Cpf</label>
+      <div class="form-group" *ngIf="loggedInUser?.role === 'paciente' || loggedInUser?.role === 'secretario'">
+        <label for="cpf">CPF</label>
         <div class="input-content">
           <input 
             id="cpf" 
@@ -111,14 +107,46 @@
         </div>
       </div>
       
+      <div class="form-group" *ngIf="loggedInUser?.role === 'medico'">
+        <label for="crm">CRM</label>
+        <div class="input-content">
+          <input 
+            id="crm" 
+            type="text" 
+            class="form-control" 
+            placeholder="CRM" 
+            formControlName="crm"
+          />
+          <div class="icon">
+            <ng-content></ng-content>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="loggedInUser?.role === 'medico'">
+        <label for="endereco">Endereço</label>
+        <div class="input-content">
+          <input 
+            id="endereco" 
+            type="text" 
+            class="form-control" 
+            placeholder="Endereço" 
+            formControlName="endereco"
+          />
+          <div class="icon">
+            <ng-content></ng-content>
+          </div>
+        </div>
+      </div>
+
       <div class="form-group">
-        <label for="foto">Foto</label>
+        <label for="foto">Foto (URL)</label>
         <div class="input-content">
           <input 
             id="foto" 
             type="text" 
             class="form-control" 
-            placeholder="Foto(URL)" 
+            placeholder="Foto (URL)" 
             formControlName="foto"
           />
           <div class="icon">
@@ -127,7 +155,7 @@
         </div>
       </div>
       
-      <div class="form-group">
+      <div class="form-group" *ngIf="loggedInUser?.role === 'paciente'">
         <label for="sangue">Tipo Sanguíneo</label>
         <div class="input-content">
           <select id="sangue" formControlName="sangue">
@@ -161,7 +189,6 @@
         </div>
       </div>
       
-
     </form>
   </div>
 </app-default-profile-layout>
