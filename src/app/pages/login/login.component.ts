@@ -44,8 +44,14 @@ export class LoginComponent {
 
   ngOnInit(): void {
     const logoutMessage = sessionStorage.getItem('logout-message');
+    const deleteMessage = sessionStorage.getItem('delete-message');
     if (logoutMessage) {
       this.toastService.success(logoutMessage, 'Logout');
+      sessionStorage.removeItem('logout-message'); // Limpar a mensagem depois de exibir
+    }
+
+    if (deleteMessage) {
+      this.toastService.success(deleteMessage, 'Logout');
       sessionStorage.removeItem('logout-message'); // Limpar a mensagem depois de exibir
     }
 

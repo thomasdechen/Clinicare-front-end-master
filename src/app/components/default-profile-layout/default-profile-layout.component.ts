@@ -57,6 +57,61 @@ export class DefaultProfileLayoutComponent implements OnInit {
     window.location.href = '/login';
   }
 
+  delete() {
+    sessionStorage.setItem('delete-message', 'Conta deletada com sucesso!');
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('id');
+    window.location.href = '/login';
+  }
+
+  deleteProfile() {
+    if (confirm('Tem certeza que deseja deletar sua conta?')) {
+      switch (this.userProfile.role) {
+        case 'paciente':
+          this.userService.deleteUserProfile().subscribe(
+            () => {
+              //this.toastr.success('Conta deletada com sucesso!');
+              this.delete();
+            },
+            (error) => {
+              console.error('Erro ao deletar conta de paciente:', error);
+              this.toastr.error('Erro ao deletar conta, digite a senha antes de deletar!');
+            }
+          );
+          break;
+        case 'medico':
+          this.userService.deleteUserProfile().subscribe(
+            () => {
+              // this.toastr.success('Conta deletada com sucesso!');
+              this.delete();
+            },
+            (error) => {
+              console.error('Erro ao deletar conta de médico:', error);
+              this.toastr.error('Erro ao deletar conta, digite a senha antes de deletar!');
+            }
+          );
+          break;
+        case 'secretario':
+          this.userService.deleteUserProfile().subscribe(
+            () => {
+              // this.toastr.success('Conta deletada com sucesso!');
+              this.delete();
+            },
+            (error) => {
+              console.error('Erro ao deletar conta de secretário:', error);
+              this.toastr.error('Erro ao deletar conta, digite a senha antes de deletar!');
+            }
+          );
+          break;
+        default:
+          console.error('Tipo de usuário desconhecido.');
+          break;
+      }
+    }
+  }
+
+
   submit() {
     this.onSubmit.emit();
   }

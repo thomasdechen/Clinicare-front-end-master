@@ -75,7 +75,6 @@ export class UserService {
   
     return this.http.put<any>(endpoint, profileData, { headers });
   }
-  
 
   // Métodos de atualização específicos para cada tipo de usuário
   updatePacienteProfile(id: number, profileData: any): Observable<any> {
@@ -109,5 +108,37 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
     return this.http.put<any>(`${this.apiUrl}/secretario/${id}`, profileData, { headers });
+  }
+
+  deleteUserProfile(): Observable<any> {
+    const token = sessionStorage.getItem('auth-token');
+    const id = sessionStorage.getItem('id');
+    const role = sessionStorage.getItem('role');
+
+    if (!token || !id || !role) {
+      throw new Error('Token, ID, or Role not found');
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    let endpoint = '';
+
+    switch (role) {
+      case 'paciente':
+        endpoint = `${this.apiUrl}/paciente/${id}`;
+        break;
+      case 'medico':
+        endpoint = `${this.apiUrl}/medico/${id}`;
+        break;
+      case 'secretario':
+        endpoint = `${this.apiUrl}/secretario/${id}`;
+        break;
+      default:
+        throw new Error(`Unsupported role: ${role}`);
+    }
+
+    return this.http.delete<any>(endpoint, { headers });
   }
 }

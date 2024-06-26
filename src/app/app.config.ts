@@ -5,9 +5,9 @@ import { routes } from './app.routes';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimations } from  '@angular/platform-browser/animations'
 import { provideToastr } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AppComponent } from './app.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideToastr(),
     provideHttpClient(withFetch()),
-    BrowserModule,
     NgxMaskDirective,
     NgxMaskPipe,
     provideNgxMask()
