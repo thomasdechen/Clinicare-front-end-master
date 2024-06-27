@@ -50,6 +50,7 @@ export class ProfileComponent implements OnInit {
       foto: new FormControl(''),
       crm: new FormControl(''),
       endereco: new FormControl(''),
+      especialidade: new FormControl('')
     });
   }
 
@@ -72,7 +73,8 @@ export class ProfileComponent implements OnInit {
           sangue: profile.sangue,
           foto: profile.foto,
           crm: profile.crm,
-          endereco: profile.endereco 
+          endereco: profile.endereco,
+          especialidade: profile.especialidade 
         });
       },
       error: (err) => {

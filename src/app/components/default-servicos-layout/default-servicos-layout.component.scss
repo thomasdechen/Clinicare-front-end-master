@@ -1,96 +1,365 @@
 @import "../../../styles/variables.scss";
 
 main {
-    height: 100%;
+  height: 100%;
 
-    // Header 
-    header {
-        width: 100%;
-        margin-top: 20px;
-    }
+  // Header 
+  header {
+    width: 100%;
+    margin-top: 20px;
+  }
 
-    .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-    header a {
-        font-family: 'Outfit400', sans-serif;
-        font-size: 20px;
-        color: $text-color;
-        text-decoration: none;
-        transition: color 0.3s ease; 
-    }
+  header a {
+    font-family: 'Outfit400', sans-serif;
+    font-size: 20px;
+    color: $text-color;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
 
-    .logo {
-        margin-right: 100px; 
-    }
+  .logo {
+    margin-right: 100px;
+  }
 
-    .logo img {
-        max-width: 100%;
-        height: auto;
-    }
+  .logo img {
+    max-width: 100%;
+    height: auto;
+  }
 
-    .nav-items ul,
-    .login ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+  .nav-items ul,
+  .login ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-    .nav-items ul li,
-    .login ul li {
-        display: inline;
-        margin-right: 20px;
-    }
+  .nav-items ul li,
+  .login ul li {
+    display: inline;
+    margin-right: 20px;
+  }
 
-    .nav-items ul li:last-child,
-    .login ul li:last-child {
-        margin-right: 0;
-    }
+  .nav-items ul li:last-child,
+  .login ul li:last-child {
+    margin-right: 0;
+  }
 
-    .nav-items {
-        margin-right: auto;
-    }
+  .nav-items {
+    margin-right: auto;
+  }
 
-    .nav-items ul li {
-        padding: 0px 15px;
-    }
+  .nav-items ul li {
+    padding: 0px 15px;
+  }
 
-    .nav-items ul li a:hover {
-        color: $primary-color; 
-    }
-    
+  .nav-items ul li a:hover {
+    color: $primary-color;
+  }
 
-    .entrar {
-        margin-left: auto;
-    }
 
-    .entrar a {
-        color: $secondary-text-color;
-    }
+  .entrar {
+    margin-left: auto;
+  }
 
-    .entrar-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: $primary-color; 
-        text-decoration: none; 
-        border-radius: 20px;
-        cursor: pointer;
-    }
+  .entrar a {
+    color: $secondary-text-color;
+  }
 
-    .entrar-button:hover {
-        background-color: rgb(3, 91, 185);
-    }
+  .entrar-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: $primary-color;
+    text-decoration: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
 
-    .profile-image-header {
-        width: 70px;
-        height: 70px;
-        border-radius: 100%; 
-        object-fit: cover; 
-        cursor: pointer;
-      }
+  .entrar-button:hover {
+    background-color: rgb(3, 91, 185);
+  }
+
+  .profile-image-header {
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+
+  // Servicos
+
+  .barra-pesquisa {
+    display: flex;
+    justify-content: center; /* Centraliza a barra de pesquisa */
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .barra-e-botao {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 350px; 
+  }
+  
+  .barra-e-botao input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px 0 0 10px; 
+    background-color: #E1E1FA; 
+    color: black; 
+  }
+  
+  .barra-e-botao .btn-buscar {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 0 10px 10px 0; /* Cantos arredondados para o botão */
+    background-color: #007bff; /* Cor de fundo do botão de buscar */
+    color: white;
+    cursor: pointer;
+    margin-left: -1px; /* Remove o espaço entre o input e o botão */
+  }
+  
+  .barra-e-botao .btn-buscar:hover {
+    background-color: #0056b3; /* Cor de fundo do botão de buscar ao passar o mouse */
+  }
+  
+  .btn-criar-servico {
+    padding: 10px 20px;
+    background-color: #007bff; /* Cor de fundo do botão de criar serviço */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 20px; /* Espaçamento à esquerda da barra de pesquisa */
+  }
+  
+  .btn-criar-servico:hover {
+    background-color: rgb(3, 91, 185);
+  }
+
+ /* Modal */
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-conteudo {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+}
+
+/* Formulário de criação de serviço */
+
+.form-criar-servico {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-content {
+  display: flex;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.input-content input,
+.input-content textarea {
+  border: none;
+  padding: 15px 20px;
+  width: 100%;
+  border-radius: 8px 0 0 8px;
+  background-color: #f1f1f1;
+}
+
+textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* Botões do formulário */
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-salvar,
+.btn-cancelar {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-salvar {
+  background-color: #007bff;
+}
+
+.btn-salvar:hover {
+  background-color: #0056b3;
+}
+
+.btn-cancelar {
+  background-color: #ff4d4d;
+}
+
+.btn-cancelar:hover {
+  background-color: #cc0000;
+}
+
+
+
+  //Section de cards
+
+  .card-servicos {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 0px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    width: 60%;
+    font-family: '400', sans-serif;
+  }
+
+  .descricao-servico {
+    padding: 5px 0px;
+  }
+
+  .botao-servico {
+    width: 30px;
+    height: 30px;
+    margin-right: 100px;
+  }
+
+  .botao-nome {
+    display: flex;
+    align-items: center;
+    padding: 15px 0px;
+  }
+
+  .nome-medico {
+    background-color: $tertiary-bg;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: $tertiary-text;
+  }
+
+.meus-servicos {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+  // Botoes alterar e excluir
+
+  .btn-visualizar-servicos {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .btn-visualizar-servicos:hover {
+    background-color: rgb(3, 91, 185);
+  }
+  
+  .meus-servicos {
+    margin-top: 20px;
+  }
+  
+  .btn-alterar,
+  .btn-excluir {
+    padding: 8px 16px;
+    background-color: #ffc107;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .btn-excluir {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn-alterar:hover,
+  .btn-excluir:hover {
+    opacity: 0.8;
+  }
+  
+
+
+  // Servicos
+
+
+
+  // ver todos serviços
+
+  .todos-servicos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-todos {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: $primary-color;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    /* Adicione esta linha para remover a borda */
+  }
+
+  .btn-todos:hover {
+    background-color: rgb(3, 91, 185);
+  }
+
 }

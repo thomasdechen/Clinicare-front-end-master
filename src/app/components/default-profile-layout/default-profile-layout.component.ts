@@ -19,6 +19,9 @@ export class DefaultProfileLayoutComponent implements OnInit {
 
   userProfile: any = {}; // Objeto para armazenar os dados do perfil do usuário
   isLoggedIn: boolean = false; // Flag para verificar se o usuário está logado
+  showBloodType: boolean = false; // Flag para mostrar ou ocultar o tipo sanguíneo
+  showEspecialidade: boolean = false; // Flag para mostrar ou ocultar a especialidade
+  buttonLabel: string = 'Meus Agendamentos'; // Texto do botão para agendamentos ou compromissos
 
   constructor(private toastr: ToastrService, private userService: UserService, private router: Router) {}
 
@@ -37,12 +40,28 @@ export class DefaultProfileLayoutComponent implements OnInit {
     this.userService.getUserProfile().subscribe(
       (data) => {
         this.userProfile = data;
+        this.updateProfileView();
       },
       (error) => {
         console.error('Erro ao buscar perfil do usuário:', error);
         // Lógica de tratamento de erro, se necessário
       }
     );
+  }
+
+  updateProfileView() {
+    if (this.userProfile.role === 'paciente') {
+      this.showBloodType = true;
+      this.buttonLabel = 'Meus Agendamentos';
+    } else if (this.userProfile.role === 'medico') {
+      this.showBloodType = false;
+      this.showEspecialidade = true;
+      this.buttonLabel = 'Meus Compromissos';
+    } else if (this.userProfile.role === 'secretario') {
+      this.showBloodType = false;
+      this.showEspecialidade = false;
+      this.buttonLabel = 'Meus Compromissos';
+    }
   }
 
   saveProfile() {
@@ -69,37 +88,14 @@ export class DefaultProfileLayoutComponent implements OnInit {
     if (confirm('Tem certeza que deseja deletar sua conta?')) {
       switch (this.userProfile.role) {
         case 'paciente':
-          this.userService.deleteUserProfile().subscribe(
-            () => {
-              //this.toastr.success('Conta deletada com sucesso!');
-              this.delete();
-            },
-            (error) => {
-              console.error('Erro ao deletar conta de paciente:', error);
-              this.toastr.error('Erro ao deletar conta, digite a senha antes de deletar!');
-            }
-          );
-          break;
         case 'medico':
-          this.userService.deleteUserProfile().subscribe(
-            () => {
-              // this.toastr.success('Conta deletada com sucesso!');
-              this.delete();
-            },
-            (error) => {
-              console.error('Erro ao deletar conta de médico:', error);
-              this.toastr.error('Erro ao deletar conta, digite a senha antes de deletar!');
-            }
-          );
-          break;
         case 'secretario':
           this.userService.deleteUserProfile().subscribe(
             () => {
-              // this.toastr.success('Conta deletada com sucesso!');
               this.delete();
             },
             (error) => {
-              console.error('Erro ao deletar conta de secretário:', error);
+              console.error(`Erro ao deletar conta de ${this.userProfile.role}:`, error);
               this.toastr.error('Erro ao deletar conta, digite a senha antes de deletar!');
             }
           );
@@ -110,7 +106,6 @@ export class DefaultProfileLayoutComponent implements OnInit {
       }
     }
   }
-
 
   submit() {
     this.onSubmit.emit();
