@@ -51,8 +51,8 @@ export class LoginComponent {
     }
 
     if (deleteMessage) {
-      this.toastService.success(deleteMessage, 'Logout');
-      sessionStorage.removeItem('logout-message'); // Limpar a mensagem depois de exibir
+      this.toastService.success(deleteMessage, 'Delete');
+      sessionStorage.removeItem('delete-message'); // Limpar a mensagem depois de exibir
     }
 
     const authToken = sessionStorage.getItem('auth-token');

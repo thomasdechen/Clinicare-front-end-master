@@ -8,7 +8,7 @@
         <ul id="nav-mid">
           <li><a href="/inicio">Início</a></li>
           <li><a href="/servicos">Serviços</a></li>
-          <li><a href="/inicio">Médicos(as)</a></li>
+          <li><a href="/medicos">Médicos(as)</a></li>
           <li><a href="/inicio">Contato</a></li>
         </ul>
       </section>
@@ -22,45 +22,31 @@
       </section>
     </div>
   </header>
-  
-  <!-- Section perfil -->
 
+  <!-- Section perfil -->
   <section class="perfil">
     <section class="esquerda-perfil">
       <img class="profile-image" [src]="userProfile?.foto || 'caminho/para/imagem/default'" alt="Foto de perfil">
       <p id="nome">{{ userProfile.name }}</p>
       <p>{{ userProfile.email }}</p>
-      <p>Tipo Sanguíneo: {{ userProfile.sangue }}</p>
+      <p *ngIf="showBloodType">Tipo Sanguíneo: {{ userProfile.sangue }}</p>
+      <p *ngIf="showEspecialidade">Especialidade: {{ userProfile.especialidade }}</p>
       <div class="btn-perfil">
-        <button class="btn-logout" (click)="logout()">
-          Sair
-        </button>
-        <button class="btn-delete" (click)="deleteProfile()" [disabled]="disablePrimaryBtn">
-          Deletar a conta
-        </button>     
+        <button class="btn-logout" (click)="logout()">Sair</button>
+        <button class="btn-delete" (click)="deleteProfile()" [disabled]="disablePrimaryBtn">Deletar a conta</button>
       </div>
     </section>
 
     <section class="direita-perfil">
       <div class="menu-perfil">
-          <a href="/profile2"><button class="btn-agend">
-            Meus Agendamentos
-          </button>
-        </a>
-          <a href="/profile"><button class="btn-info">
-            Perfil(Informações)
-          </button>
-        </a>
+        <a href="/profile2"><button class="btn-agend">{{ buttonLabel }}</button></a>
+        <a href="/profile"><button class="btn-info">Perfil(Informações)</button></a>
       </div>
       <div class="form-perfil">
         <h2>{{ title }}</h2>
         <ng-content></ng-content>
-        <button class="btn-save" (click)="saveProfile()" [disabled]="disablePrimaryBtn">
-          {{ primaryBtnText }}
-        </button>
-        
+        <button class="btn-save" (click)="saveProfile()" [disabled]="disablePrimaryBtn">{{ primaryBtnText }}</button>
       </div>
     </section>
   </section>
-
 </main>

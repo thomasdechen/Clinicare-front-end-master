@@ -94,12 +94,10 @@ main {
     cursor: pointer;
   }
 
-
-  // Servicos
-
+  //Medicos barra de pesquisa
   .barra-pesquisa {
     display: flex;
-    justify-content: center; 
+    justify-content: center; /* Centraliza a barra de pesquisa */
     align-items: center;
     margin-bottom: 20px;
     padding: 50px 0px;
@@ -132,119 +130,18 @@ main {
   }
   
   .barra-e-botao .btn-buscar:hover {
-    background-color: #0056b3; 
-  }
-  
-  .btn-criar-servico {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-left: 20px; 
-  }
-  
-  .btn-criar-servico:hover {
-    background-color: rgb(3, 91, 185);
+    background-color: #0056b3;
   }
 
- /* Modal */
 
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-conteudo {
-  background-color: #fefefe;
-  margin: 10% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 500px;
-  border-radius: 10px;
-}
-
-/* Formulário de criação de serviço */
-
-.form-criar-servico {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.input-content {
-  display: flex;
-  width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.input-content input,
-.input-content textarea {
-  border: none;
-  padding: 15px 20px;
-  width: 100%;
-  border-radius: 8px 0 0 8px;
-  background-color: #f1f1f1;
-}
-
-textarea {
-  resize: none;
-  height: 100px;
-}
-
-/* Botões do formulário */
-
-.btn-group {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.btn-salvar,
-.btn-cancelar {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
-}
-
-.btn-salvar {
-  background-color: #007bff;
-}
-
-.btn-salvar:hover {
-  background-color: #0056b3;
-}
-
-.btn-cancelar {
-  background-color: #ff4d4d;
-}
-
-.btn-cancelar:hover {
-  background-color: #cc0000;
-}
-
-
-
-  //Section de cards
-
-  .card-servicos {
+  // Medicos
+  .card-medicos {
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
     padding: 40px 0px; 
+    font-family: 'Outfit400', sans-serif;
   }
   
   .card-grid {
@@ -257,28 +154,24 @@ textarea {
   
   .card {
     width: 100%; 
-    max-width: 350px; 
+    max-width: 300px;
     margin: 0 auto; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);  
-    border-radius: 10px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
   }
   
-  .card h2 {
+  .card h4 {
     font-family: 'Outfit600', sans-serif;
   }
   
-  .descricao-servico {
-    padding: 5px 0px;
-  }
-  
-  .botao-servico {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px; 
+  .botao-medico {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
   }
   
   .botao-nome {
@@ -288,90 +181,37 @@ textarea {
     margin-top: auto;
   }
   
-  .nome-medico {
-    background-color: $tertiary-bg;
-    padding: 10px 20px;
+  .especialidade {
+    background-color: #9CE2E4;
+    padding: 10px 10px;
+    margin-top: 10px;
     border-radius: 10px;
     font-weight: bold;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    color: $tertiary-text;
-    margin-left: auto; 
-    max-width: calc(100% - 40px); 
+    color: #237D82;
+    margin-right: auto; 
+    max-width: calc(100% - 40px);
   }
-  
-  // btn todos meus servicos
 
-  .btn-todos {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 10px 0;
+  .endereco {
+    padding: 10px 0px;
     text-align: center;
-  }
-  
-  .btn-todos:hover {
-    background-color: #0056b3;
-  }
-  
-
-
-  // Botoes alterar e excluir
-
-  .btn-visualizar-servicos {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  .btn-visualizar-servicos:hover {
-    background-color: rgb(3, 91, 185);
-  }
-  
-  
-  .btn-alterar,
-  .btn-excluir {
-    padding: 8px 16px;
-    background-color: #ffc107;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .btn-excluir {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .btn-alterar:hover,
-  .btn-excluir:hover {
-    opacity: 0.8;
-  }
-  
-
-
-  // Servicos
-
-
-
-  // ver todos serviços
-
-  .todos-servicos {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-right: auto; 
+    max-width: calc(100% - 40px);
   }
 
-  .todos-meus-servicos {
+  .foto-medico {
+    width: 100%;
+    height: 250px;
+    border-radius: 10%;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+
+  // Botao todos medicos
+
+  .todos-medicos {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -385,7 +225,6 @@ textarea {
     border-radius: 10px;
     cursor: pointer;
     border: none;
-    /* Adicione esta linha para remover a borda */
   }
 
   .btn-todos:hover {

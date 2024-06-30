@@ -3,94 +3,151 @@
 main {
     height: 100%;
 
-    // Header 
-    header {
-        width: 100%;
-        margin-top: 20px;
-    }
+  // Header 
+  header {
+    width: 100%;
+    margin-top: 20px;
+  }
 
-    .container {
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header a {
+    font-family: 'Outfit400', sans-serif;
+    font-size: 20px;
+    color: $text-color;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .logo {
+    margin-right: 100px;
+  }
+
+  .logo img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .nav-items ul,
+  .login ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-items ul li,
+  .login ul li {
+    display: inline;
+    margin-right: 20px;
+  }
+
+  .nav-items ul li:last-child,
+  .login ul li:last-child {
+    margin-right: 0;
+  }
+
+  .nav-items {
+    margin-right: auto;
+  }
+
+  .nav-items ul li {
+    padding: 0px 15px;
+  }
+
+  .nav-items ul li a:hover {
+    color: $primary-color;
+  }
+
+
+  .entrar {
+    margin-left: auto;
+  }
+
+  .entrar a {
+    color: $secondary-text-color;
+  }
+
+  .entrar-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: $primary-color;
+    text-decoration: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .entrar-button:hover {
+    background-color: rgb(3, 91, 185);
+  }
+
+  .profile-image-header {
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+
+      //Section 1
+
+      .section-1 {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
+        justify-content: center;
+        margin-top: 120px;
+      }
 
-    header a {
-        font-family: 'Outfit400', sans-serif;
-        font-size: 20px;
-        color: $text-color;
-        text-decoration: none;
-        transition: color 0.3s ease; 
-    }
+      .section-1 p {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500; 
+        font-size: 40px;
+      }
 
-    .logo {
-        margin-right: 100px; 
-    }
-
-    .logo img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    .nav-items ul,
-    .login ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .nav-items ul li,
-    .login ul li {
-        display: inline;
-        margin-right: 20px;
-    }
-
-    .nav-items ul li:last-child,
-    .login ul li:last-child {
-        margin-right: 0;
-    }
-
-    .nav-items {
-        margin-right: auto;
-    }
-
-    .nav-items ul li {
-        padding: 0px 15px;
-    }
-
-    .nav-items ul li a:hover {
-        color: $primary-color; 
-    }
-    
-
-    .entrar {
-        margin-left: auto;
-    }
-
-    .entrar a {
-        color: $secondary-text-color;
-    }
-
-    .entrar-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: $primary-color; 
-        text-decoration: none; 
+      .section-1 img {
         border-radius: 20px;
-        cursor: pointer;
-    }
+        padding: 0px 10px;
+      }
 
-    .entrar-button:hover {
+      .medico-1 {
+        width: 300px;
+        height: 450px;
+      }
+
+      .medico-2, .medico-3 {
+        width: 250px;
+        height: 270px;
+        margin-top: 20px;
+      }
+
+      .column-3 {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+      }
+
+      .column-1 {
+        width: 500px;
+        margin-top: 20px;
+      }
+
+      .btn-consultas {
+        margin-top: 20px;
+        font-size: 18px;
+        padding: 10px 20px;
+        background-color: $primary-color;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        border: none;
+      }
+    
+      .btn-consultas:hover {
         background-color: rgb(3, 91, 185);
-    }
-
-    .profile-image-header {
-        width: 70px;
-        height: 70px;
-        border-radius: 100%; 
-        object-fit: cover; 
-        cursor: pointer;
       }
 }

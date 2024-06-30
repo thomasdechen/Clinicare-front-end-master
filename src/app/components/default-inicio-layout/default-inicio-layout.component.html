@@ -1,26 +1,42 @@
 <main>
-    <header>
-      <div class="container">
-        <section class="logo col-3">
-          <a href="#"><img src="assets/svg/logo.svg" alt="logo" /></a>
-        </section>
-        <section class="nav-items col-6">
-          <ul id="nav-mid">
-            <li><a href="/inicio">Início</a></li>
-            <li><a href="/servicos">Serviços</a></li>
-            <li><a href="/inicio">Médicos(as)</a></li>
-            <li><a href="/inicio">Contato</a></li>
-          </ul>
-        </section>
-        <section class="entrar col-3">
-          <ng-container *ngIf="isLoggedIn; else notLoggedIn">
-            <a href="/profile"><img class="profile-image-header" [src]="userProfile?.foto || 'caminho/para/imagem/default'" alt="Foto de perfil" (click)="goToProfile()"></a>
-          </ng-container>
-          <ng-template #notLoggedIn>
-            <a (click)="navigate()" class="entrar-button">Entrar</a>
-          </ng-template>
-        </section>
-      </div>
-    </header>
+  <header>
+    <div class="container">
+      <section class="logo col-3">
+        <a href="#"><img src="assets/svg/logo.svg" alt="logo" /></a>
+      </section>
+      <section class="nav-items col-6">
+        <ul id="nav-mid">
+          <li><a href="/inicio">Início</a></li>
+          <li><a href="/servicos">Serviços</a></li>
+          <li><a href="/medicos">Médicos(as)</a></li>
+          <li><a href="/inicio">Contato</a></li>
+        </ul>
+      </section>
+      <section class="entrar col-3">
+        <ng-container *ngIf="isLoggedIn; else notLoggedIn">
+          <a href="/profile"><img class="profile-image-header"
+              [src]="userProfile?.foto || 'caminho/para/imagem/default'" alt="Foto de perfil"
+              (click)="goToProfile()"></a>
+        </ng-container>
+        <ng-template #notLoggedIn>
+          <a (click)="navigate()" class="entrar-button">Entrar</a>
+        </ng-template>
+      </section>
+    </div>
+  </header>
+
+    <section class="section-1">
+      <article class="column-1">
+        <p>Sua saúde é nosso compromisso. Clinicare: sempre ao seu lado</p>
+        <a href="/medicos"><button class="btn-consultas">Solicite ume Consulta</button></a>
+      </article>
+      <article>
+        <img class="medico-1" src="../../../assets/svg/Médico 1.png" alt="">
+      </article>
+      <article class="column-3">
+        <img class="medico-2" src="../../../assets/svg/Médico 2.png" alt="">
+        <img class="medico-3" src="../../../assets/svg/Médica 3.png" alt="">
+      </article>
+    </section>
   
   </main>
