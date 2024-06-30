@@ -36,6 +36,8 @@ export class DefaultServicosLayoutComponent implements OnInit {
   mostrarModalAlterarServico: boolean = false;
   servicoSelecionado: any = {};
 
+  mostrarTodosMeusServicos: boolean = false; 
+
   constructor(
     private toastr: ToastrService,
     private userService: UserService,
@@ -47,8 +49,9 @@ export class DefaultServicosLayoutComponent implements OnInit {
     this.checkLoginStatus();
     if (this.isLoggedIn) {
       this.fetchUserProfile();
-      this.carregarServicos();
+      
     }
+    this.carregarServicos();
     this.verificarRole();
   }
 
@@ -110,9 +113,6 @@ export class DefaultServicosLayoutComponent implements OnInit {
       }
     );
   }
-  atualizarServicosExibidos() {
-    this.servicosExibidos = this.mostrarTodosServicos ? this.servicos : this.servicos.slice(0, 6);
-  }
 
   atualizarServicosExibidos2() {
     this.servicosExibidos = this.mostrarTodosServicos ? this.servicosMedico : this.servicosMedico.slice(0, 6);
@@ -128,29 +128,31 @@ export class DefaultServicosLayoutComponent implements OnInit {
     this.atualizarServicosExibidos2();
   }
 
+  verTodosMeusServicos() {
+    this.mostrarTodosMeusServicos = true;
+    this.atualizarServicosMedicoExibidos();
+  }
+  
+
   visualizarServicosMedico() {
     const medicoId = sessionStorage.getItem('id');
     if (!medicoId) {
       console.error('ID do médico não encontrado.');
       return;
     }
-  
+
     this.servicoService.buscarServicosPorMedicoId(medicoId).subscribe(
       (data) => {
         this.servicosMedico = data;
         this.mostrarMeusServicos = true; // Mostra a seção de "Meus Serviços"
-        this.buscarServicos2(); // Atualiza os serviços do médico exibidos
+        this.atualizarServicosMedicoExibidos(); // Certifique-se de chamar isso aqui se necessário
       },
       (error) => {
         console.error('Erro ao buscar serviços do médico:', error);
       }
     );
   }
-  
 
-  atualizarServicosMedicoExibidos() {
-    this.servicosMedicoExibidos = this.mostrarTodosServicos2 ? this.servicosMedico : this.servicosMedico;
-  }
 
   verTodosServicosMedico() {
     this.mostrarTodosServicos2 = true;
@@ -161,18 +163,30 @@ export class DefaultServicosLayoutComponent implements OnInit {
   buscarServicosPorNome(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const nomeServico = inputElement.value.trim().toLowerCase();
-    
+
     if (this.mostrarMeusServicos) {
       // Filtra os serviços do médico com base no nome do serviço digitado
-      this.servicosMedicoExibidos = this.servicosMedico.filter(servico =>
-        servico.name.toLowerCase().includes(nomeServico)
-      );
+      this.servicosMedicoExibidos = nomeServico
+        ? this.servicosMedico.filter(servico =>
+            servico.name.toLowerCase().includes(nomeServico)
+          )
+        : this.servicosMedico.slice(0, 6);
     } else {
       // Filtra os serviços gerais com base no nome do serviço digitado
-      this.servicosExibidos = this.servicos.filter(servico =>
-        servico.name.toLowerCase().includes(nomeServico)
-      );
+      this.servicosExibidos = nomeServico
+        ? this.servicos.filter(servico =>
+            servico.name.toLowerCase().includes(nomeServico)
+          )
+        : this.servicos.slice(0, 6);
     }
+  }
+  
+  atualizarServicosExibidos() {
+    this.servicosExibidos = this.mostrarTodosServicos ? this.servicos : this.servicos.slice(0, 6);
+  }
+  
+  atualizarServicosMedicoExibidos() {
+    this.servicosMedicoExibidos = this.mostrarTodosMeusServicos ? this.servicosMedico : this.servicosMedico.slice(0, 6);
   }
   
   

@@ -1,0 +1,58 @@
+<main>
+  <header>
+      <div class="container">
+          <section class="logo col-3">
+              <a href="#"><img src="assets/svg/logo.svg" alt="logo" /></a>
+          </section>
+          <section class="nav-items col-6">
+              <ul id="nav-mid">
+                  <li><a href="/inicio">Início</a></li>
+                  <li><a href="/servicos">Serviços</a></li>
+                  <li><a href="/medicos">Médicos(as)</a></li>
+                  <li><a href="/inicio">Contato</a></li>
+              </ul>
+          </section>
+          <section class="entrar col-3">
+              <ng-container *ngIf="isLoggedIn; else notLoggedIn">
+                  <a href="/profile"><img class="profile-image-header"
+                          [src]="userProfile?.foto || 'caminho/para/imagem/default'" alt="Foto de perfil"
+                          (click)="goToProfile()"></a>
+              </ng-container>
+              <ng-template #notLoggedIn>
+                  <a (click)="navigate()" class="entrar-button">Entrar</a>
+              </ng-template>
+          </section>
+      </div>
+  </header>
+
+  <section class="section-medicos">
+      <section class="barra-pesquisa">
+          <div class="barra-e-botao">
+              <input type="text" placeholder="Procure pelo nome do médico" (input)="buscarMedicosPorNome($event)" />
+              <button class="btn-buscar">Buscar</button>
+          </div>
+      </section>
+
+      <!-- Seção de médicos exibidos -->
+      <section class="card-medicos">
+          <section class="card-grid">
+              <div class="card" *ngFor="let medico of medicosExibidos">
+                  <img [src]="medico.foto || 'caminho/para/imagem/default'" alt="Foto do médico"
+                      class="foto-medico">
+                  <h3 class="nome-medico">{{ medico.name }}</h3>
+                  <h4 class="especialidade">{{ medico.especialidade }}</h4>
+                  <div class="botao-nome">
+                      <span class="endereco">{{ medico.endereco }}</span>
+                      <img class="botao-medico" src="../../../assets/svg/Seta com circulo.png" alt="botão">
+                  </div>
+              </div>
+          </section>
+      </section>
+
+      <!-- Botão para visualizar todos os médicos -->
+      <section class="todos-medicos">
+          <button *ngIf="!mostrarTodosMedicos && medicos.length > 6" (click)="verTodosMedicos()"
+              class="btn-todos">Veja todos os médicos(as)</button>
+      </section>
+  </section>
+</main>

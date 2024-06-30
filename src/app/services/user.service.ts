@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,11 @@ export class UserService {
         throw new Error(`Unsupported role: ${role}`);
     }
   
-    return this.http.put<any>(endpoint, profileData, { headers });
+    return this.http.put<any>(endpoint, profileData, { headers }).pipe(
+      tap((value) => {
+        sessionStorage.setItem("username", value.name);
+      })
+    );
   }
 
   // Métodos de atualização específicos para cada tipo de usuário
@@ -96,7 +101,11 @@ export class UserService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.put<any>(`${this.apiUrl}/medico/${id}`, profileData, { headers });
+    return this.http.put<any>(`${this.apiUrl}/medico/${id}`, profileData, { headers }).pipe(
+      tap((value) => {
+        sessionStorage.setItem("username", value.name);
+      })
+    ); 
   }
 
   updateSecretarioProfile(id: number, profileData: any): Observable<any> {

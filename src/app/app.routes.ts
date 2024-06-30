@@ -7,6 +7,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { Profile2Component } from './pages/profile2/profile2.component';
 import { ServicosComponent } from './pages/servicos/servicos.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
+import { MedicosComponent } from './pages/medicos/medicos.component';
 
 export const routes: Routes = [
     {
@@ -41,5 +42,9 @@ export const routes: Routes = [
     {
         path: "inicio",
         component: InicioComponent
+    },
+    {
+        path: "medicos",
+        component: MedicosComponent
     }
 ];

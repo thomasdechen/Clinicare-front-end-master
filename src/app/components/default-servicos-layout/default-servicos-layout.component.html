@@ -8,7 +8,7 @@
         <ul id="nav-mid">
           <li><a href="/inicio">Início</a></li>
           <li><a href="/servicos">Serviços</a></li>
-          <li><a href="/inicio">Médicos(as)</a></li>
+          <li><a href="/medicos">Médicos(as)</a></li>
           <li><a href="/inicio">Contato</a></li>
         </ul>
       </section>
@@ -73,38 +73,41 @@
       </div>
     </div>
 
-    <!-- Seção padrão de serviços exibidos -->
-    <section class="card-servicos" *ngIf="!mostrarMeusServicos">
+<!-- Seção padrão de serviços exibidos -->
+<section class="card-servicos" *ngIf="!mostrarMeusServicos">
+  <section class="card-grid">
+    <div class="card" *ngFor="let servico of servicosExibidos">
+      <h2 class="titulo-servico">{{ servico.name }}</h2>
+      <p class="descricao-servico">{{ servico.descricao }}</p>
+      <div class="botao-nome">
+        <img class="botao-servico" src="../../../assets/svg/Seta com circulo.png" alt="botão">
+        <span class="nome-medico">{{ servico.name_medico }}</span>
+      </div>
+    </div>
+  </section>
+</section>
+
+
+<!-- Seção para "Meus Serviços" -->
+  <section class="meus-servicos" *ngIf="mostrarMeusServicos">
+    <section class="card-servicos">
       <section class="card-grid">
-        <div class="card" *ngFor="let servico of servicosExibidos">
+        <div class="card" *ngFor="let servico of servicosMedicoExibidos">
           <h2 class="titulo-servico">{{ servico.name }}</h2>
           <p class="descricao-servico">{{ servico.descricao }}</p>
           <div class="botao-nome">
-            <img class="botao-servico" src="../../../assets/svg/Seta com circulo.png" alt="botão">
-            <span class="nome-medico">{{ servico.name_medico }}</span>
+            <button class="btn-alterar" (click)="alterarServico(servico)">Alterar</button>
+            <button class="btn-excluir" (click)="excluirServico(servico)">Excluir</button>
           </div>
         </div>
       </section>
     </section>
 
-<!-- Seção para "Meus Serviços" -->
-<section class="meus-servicos" *ngIf="mostrarMeusServicos">
-  <section class="barra-pesquisa">
-  </section>
-  <section class="card-servicos">
-    <section class="card-grid">
-      <div class="card" *ngFor="let servico of servicosMedicoExibidos">
-        <h2 class="titulo-servico">{{ servico.name }}</h2>
-        <p class="descricao-servico">{{ servico.descricao }}</p>
-        <div class="botao-nome">
-          <button class="btn-alterar" (click)="alterarServico(servico)">Alterar</button>
-          <button class="btn-excluir" (click)="excluirServico(servico)">Excluir</button>
-        </div>
-      </div>
+    <!-- Botão para visualizar todos os meus serviços -->
+    <section class="todos-meus-servicos">
+      <button *ngIf="!mostrarTodosMeusServicos && servicosMedico.length > 6" (click)="verTodosMeusServicos()" class="btn-todos">Ver todos os meus serviços</button>
     </section>
   </section>
-</section>
-
 
     <!-- Botão para visualizar todos os serviços -->
     <section class="todos-servicos" *ngIf="!mostrarMeusServicos">
