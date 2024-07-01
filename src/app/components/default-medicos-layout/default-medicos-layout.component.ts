@@ -51,7 +51,6 @@ export class DefaultMedicosLayoutComponent implements OnInit {
             },
             (error) => {
                 console.error('Erro ao buscar perfil do usuário:', error);
-                // Lógica de tratamento de erro, se necessário
             }
         );
     }
@@ -59,12 +58,12 @@ export class DefaultMedicosLayoutComponent implements OnInit {
     carregarMedicos() {
         this.medicoService.buscarMedicos().subscribe(
             (data) => {
-                this.medicos = data; // Atualiza a lista de médicos com os dados recebidos do backend
+                console.log(data); // Adicione este log para verificar os dados
+                this.medicos = data; 
                 this.atualizarMedicosExibidos();
             },
             (error) => {
                 console.error('Erro ao buscar médicos:', error);
-                // Lógica de tratamento de erro, se necessário
             }
         );
     }
@@ -75,7 +74,7 @@ export class DefaultMedicosLayoutComponent implements OnInit {
 
         this.medicosExibidos = nomeMedico
             ? this.medicos.filter(medico =>
-                medico.name.toLowerCase().includes(nomeMedico)
+                medico.nome.toLowerCase().includes(nomeMedico)
             )
             : this.medicos.slice(0, 6);
     }
@@ -89,6 +88,15 @@ export class DefaultMedicosLayoutComponent implements OnInit {
         this.atualizarMedicosExibidos();
     }
 
+    verDetalhesMedico(medico: any) {
+        const medicoId = medico._id; 
+        console.log('ID do médico:', medicoId); // Adicione este log para verificar o ID
+        if (medicoId) {
+            this.router.navigate([`/medico-detail/${medicoId}`]);
+        } else {
+            console.error('ID do médico é undefined');
+        }
+    }
     submit() {
         this.onSubmit.emit();
     }

@@ -1,0 +1,150 @@
+@import "../../../styles/variables.scss";
+
+main {
+    height: 100%;
+
+    // Header 
+    header {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    header a {
+        font-family: 'Outfit400', sans-serif;
+        font-size: 20px;
+        color: $text-color;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .logo {
+        margin-right: 100px;
+    }
+
+    .logo img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .nav-items ul,
+    .login ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-items ul li,
+    .login ul li {
+        display: inline;
+        margin-right: 20px;
+    }
+
+    .nav-items ul li:last-child,
+    .login ul li:last-child {
+        margin-right: 0;
+    }
+
+    .nav-items {
+        margin-right: auto;
+    }
+
+    .nav-items ul li {
+        padding: 0px 15px;
+    }
+
+    .nav-items ul li a:hover {
+        color: $primary-color;
+    }
+
+
+    .entrar {
+        margin-left: auto;
+    }
+
+    .entrar a {
+        color: $secondary-text-color;
+    }
+
+    .entrar-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: $primary-color;
+        text-decoration: none;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .entrar-button:hover {
+        background-color: rgb(3, 91, 185);
+    }
+
+    .profile-image-header {
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        object-fit: cover;
+        cursor: pointer;
+    }
+
+    // Footer
+    footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        background-color: #EAEAEA;
+        margin-top: 100px;
+    }
+
+    .footer-column-1 {
+        display: flex;
+        flex-direction: column;
+        margin-top: 15px;
+    }
+
+    .footer-column-1 img {
+        padding: 20px 0px;
+    }
+
+    .footer-column-2,
+    .footer-column-3 {
+        margin-top: 40px;
+    }
+
+
+
+    footer ul {
+        list-style: none;
+        padding: 10px 0px;
+    }
+
+    footer a {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 400;
+        color: $text-color;
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+    }
+
+    footer ul li a:hover {
+        color: $primary-color;
+    }
+
+    footer li {
+        padding: 10px 0px;
+    }
+
+    .footer-img {
+        margin-left: 30px;
+    }
+
+    // Footer
+}

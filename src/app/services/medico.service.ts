@@ -13,4 +13,10 @@ export class MedicoService {
   buscarMedicos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/medico`);
   }
+
+  buscarMedicoPorId(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/medico/${id}`);
+  }
+
+  
 }

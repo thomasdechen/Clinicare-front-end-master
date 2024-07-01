@@ -219,7 +219,7 @@ export class DefaultServicosLayoutComponent implements OnInit {
   }
 
   alterarServico(servico: any) {
-    this.servicoSelecionado = { ...servico }; // Copia profunda do objeto para evitar referência direta
+    this.servicoSelecionado = { ...servico };
     this.mostrarModalAlterarServico = true;
   }
 

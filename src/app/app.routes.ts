@@ -8,6 +8,7 @@ import { Profile2Component } from './pages/profile2/profile2.component';
 import { ServicosComponent } from './pages/servicos/servicos.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { MedicosComponent } from './pages/medicos/medicos.component';
+import { MedicoDetailComponent } from './pages/medico-detail/medico-detail.component';
 
 export const routes: Routes = [
     {
@@ -46,5 +47,9 @@ export const routes: Routes = [
     {
         path: "medicos",
         component: MedicosComponent
+    },
+    {
+        path: "medico-detail/:id",
+        component: MedicoDetailComponent
     }
 ];
