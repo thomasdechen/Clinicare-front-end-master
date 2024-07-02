@@ -38,7 +38,7 @@
             <section class="card-grid">
                 <div class="card" *ngFor="let medico of medicosExibidos" (click)="verDetalhesMedico(medico)">
                     <img [src]="medico.foto || 'caminho/para/imagem/default'" alt="Foto do médico" class="foto-medico">
-                    <h3 class="nome-medico">{{ medico.nome }}</h3>
+                    <h3 class="nome-medico">{{ medico.name }}</h3>
                     <h4 class="especialidade">{{ medico.especialidade }}</h4>
                     <div class="botao-nome">
                       <span class="endereco">{{ medico.endereco }}</span>

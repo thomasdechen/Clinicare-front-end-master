@@ -27,6 +27,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   medico: any;
   avaliacao: string = '';
   horariosDisponiveis: string[] = []; 
+  activeSection: string = 'sobre'; 
 
   constructor(
     private route: ActivatedRoute,
@@ -46,7 +47,6 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       
     }
     this.verificarRole();
-    
   }
 
   checkLoginStatus() {
@@ -84,14 +84,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     }
   }
 
-  postarAvaliacao(): void {
-    // Lógica para postar avaliação
-    console.log('Avaliacao postada:', this.avaliacao);
-  }
-
-  agendarConsulta(): void {
-    // Lógica para agendar consulta
-    console.log('Consulta agendada');
+  setActiveSection(section: string): void {
+    this.activeSection = section;
   }
 
   submit() {

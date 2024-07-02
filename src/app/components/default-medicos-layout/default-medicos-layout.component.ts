@@ -74,7 +74,7 @@ export class DefaultMedicosLayoutComponent implements OnInit {
 
         this.medicosExibidos = nomeMedico
             ? this.medicos.filter(medico =>
-                medico.nome.toLowerCase().includes(nomeMedico)
+                medico.name.toLowerCase().includes(nomeMedico)
             )
             : this.medicos.slice(0, 6);
     }
@@ -93,23 +93,48 @@ export class DefaultMedicosLayoutComponent implements OnInit {
         console.log('ID do médico:', medicoId); // Adicione este log para verificar o ID
         if (medicoId) {
             this.router.navigate([`/medico-detail/${medicoId}`]);
+            this.gotoTop();
         } else {
             console.error('ID do médico é undefined');
         }
     }
+
+    gotoTop() {
+        const scrollDuration = 500;
+    
+        const cosParameter = window.scrollY / 2;
+        let scrollCount = 0;
+        let oldTimestamp = performance.now();
+    
+        function step(newTimestamp: number) {
+            const timestampDiff = newTimestamp - oldTimestamp;
+            if (scrollCount >= scrollDuration || window.scrollY === 0) return;
+    
+            scrollCount += Math.PI * timestampDiff / scrollDuration;
+            if (scrollCount >= Math.PI) return window.scrollTo(0, 0);
+    
+            window.scrollTo(0, Math.round(cosParameter + cosParameter * Math.cos(scrollCount)));
+            oldTimestamp = newTimestamp;
+            window.requestAnimationFrame(step);
+        }
+    
+        window.requestAnimationFrame(step);
+    }
+    
+
     submit() {
         this.onSubmit.emit();
-    }
-
-    navigate() {
+      }
+    
+      navigate() {
         this.onNavigate.emit();
-    }
-
-    entrar() {
+      }
+    
+      entrar() {
         this.onEntrar.emit();
-    }
-
-    goToProfile() {
+      }
+    
+      goToProfile() {
         this.router.navigate(['/profile']);
-    }
+      }
 }

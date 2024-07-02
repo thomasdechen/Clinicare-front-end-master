@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DefaultMedicoDetailLayoutModule } from '../../components/default-medico-detail-layout/default-medico-detail-layout.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-medico-detail',
@@ -10,5 +11,15 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './medico-detail.component.scss'
 })
 export class MedicoDetailComponent {
+
+  constructor(private router: Router) {}
+
+  navigate(){
+    this.router.navigate(["login"])
+  }
+
+  entrar(){
+    this.router.navigate(["login"])
+  }
 
 }
