@@ -10,7 +10,10 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-package/change-detection": "^1.0.0",
+    "@angular-package/core": "^1.0.1",
     "@angular/animations": "^17.3.0",
+    "@angular/cdk": "^17.3.10",
     "@angular/common": "^17.3.0",
     "@angular/compiler": "^17.3.0",
     "@angular/core": "^17.3.0",

@@ -90,7 +90,7 @@ export class DefaultMedicosLayoutComponent implements OnInit {
 
     verDetalhesMedico(medico: any) {
         const medicoId = medico._id; 
-        console.log('ID do médico:', medicoId); // Adicione este log para verificar o ID
+        console.log('ID do médico:', medicoId);
         if (medicoId) {
             this.router.navigate([`/medico-detail/${medicoId}`]);
             this.gotoTop();

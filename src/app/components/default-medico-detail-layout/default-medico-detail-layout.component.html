@@ -31,39 +31,65 @@
         <article>
           <img [src]="medico.foto || 'caminho/para/imagem/default'" alt="Foto do médico" class="foto-medico">
         </article>
-
         <article class="dados-medico">
           <h2 class="nome">{{ medico.name }}</h2>
           <h3 class="especialidade">{{ medico.especialidade }}</h3>
         </article>
       </section>
-
       <section class="row-2">
         <article class="menu-sobre-avaliacoes">
-          <a class="menu-sobre" [ngClass]="{ 'active': activeSection === 'sobre' }" (click)="setActiveSection('sobre')">Sobre</a>
-          <a class="menu-avaliacoes" [ngClass]="{ 'active': activeSection === 'avaliacoes' }" (click)="setActiveSection('avaliacoes')">Avaliações</a>
+          <a class="menu-sobre" [ngClass]="{ 'active': activeSection === 'sobre' }"
+            (click)="setActiveSection('sobre')">Sobre</a>
+          <a class="menu-avaliacoes" [ngClass]="{ 'active': activeSection === 'avaliacoes' }"
+            (click)="setActiveSection('avaliacoes')">Avaliações</a>
         </article>
         <hr class="styled-line">
-        <article class="sobre" *ngIf="activeSection === 'sobre'">
-          <p class="sobre-titulo">Sobre o<span class="sobre-medico"> {{ medico.name}}</span></p>
-          <p>{{ medico.descricao }}</p>
-          <p class="descricao-medico">{{ medico.name }} é um(a) renomado(a) {{ medico.especialidade }} com especialização em terapias manuais e reabilitação neuromusculoesquelética. Com mais de uma década de experiência clínica, {{ medico.name }} é conhecido(a) por sua abordagem holística no tratamento de pacientes, combinando técnicas avançadas e um cuidado personalizado para promover a recuperação e o bem-estar geral.
-            Formado(a) pela prestigiada Universidade de São Paulo, ele(a) continuou seus estudos em diversas instituições internacionais, aprimorando suas habilidades em terapias inovadoras.</p>
+        <article class="sobre-avaliacoes" *ngIf="!showAgendamento">
+          <article class="sobre" *ngIf="activeSection === 'sobre'">
+            <p class="sobre-titulo">Sobre o<span class="sobre-medico"> {{ medico.name }}</span></p>
+            <p>{{ medico.descricao }}</p>
+            <p class="descricao-medico">{{ medico.name }} é um(a) renomado(a) {{ medico.especialidade }} com
+              especialização em terapias manuais e reabilitação neuromusculoesquelética. Com mais de uma década de
+              experiência clínica, {{ medico.name }} é conhecido(a) por sua abordagem holística no tratamento de
+              pacientes, combinando técnicas avançadas e um cuidado personalizado para promover a recuperação e o
+              bem-estar geral.
+              Formado(a) pela prestigiada Universidade de São Paulo, ele(a) continuou seus estudos em diversas
+              instituições internacionais, aprimorando suas habilidades em terapias inovadoras.</p>
+          </article>
+          <article class="avaliacao" *ngIf="activeSection === 'avaliacoes'">
+            <!-- Conteúdo da seção de Avaliações -->
+          </article>
+        </article>
+        <!-- Seção de Agendamento -->
+        <article class="agendamento" *ngIf="showAgendamento">
+          <mat-form-field appearance="fill">
+            <mat-label>Escolha uma data</mat-label>
+            <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        
+          <div *ngIf="availableTimes.length > 0">
+            <mat-form-field appearance="fill">
+              <mat-label>Escolha um horário</mat-label>
+              <mat-select [(value)]="selectedTime">
+                <mat-option *ngFor="let time of availableTimes" [value]="time">{{time}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        
+            <button mat-raised-button color="primary" (click)="submitForm()">Agendar Consulta</button>
+          </div>
         </article>
 
-        <article class="avaliacao" *ngIf="activeSection === 'avaliacoes'">
-          <!-- Conteúdo da seção de Avaliações -->
-        </article>
       </section>
     </section>
-
     <section class="column-direita">
       <article>
         <p class="preco">Preço da Consulta: <span class="preco-bold">R$ 100,00</span></p>
         <h2 class="horario-atend">Horário de Atendimento:</h2>
-        <p class="horario">Segunda a Sexta:  07:00 as 17:00</p>
+        <p class="horario">Segunda a Sexta: 07:00 as 17:00</p>
         <p class="endereco">Endereço: {{ medico.endereco }}</p>
-        <button class="btn-agendar-consulta">Agendar Consulta</button>
+        <button class="btn-agendar-consulta" (click)="showAgendamentoSection()">Agendar Consulta</button>
       </article>
     </section>
   </section>
