@@ -35,66 +35,91 @@
       <button class="btn-visualizar-servicos" *ngIf="isMedico" (click)="visualizarServicosMedico()">Meus Serviços</button>
     </section>
 
-    <!-- Modal de criação de serviço -->
-    <div *ngIf="mostrarModalCriarServico" class="modal">
-      <div class="modal-conteudo">
-        <h2>Criar Serviço</h2>
-        <form (ngSubmit)="criarServico()" class="form-criar-servico">
-          <div class="input-content">
-            <input type="text" [(ngModel)]="novoServico.nomeServico" name="nomeServico" placeholder="Nome do Serviço" required />
-          </div>
-          <div class="input-content">
-            <textarea [(ngModel)]="novoServico.descricaoServico" name="descricaoServico" placeholder="Descrição do Serviço" required></textarea>
-          </div>
-          <div class="btn-group">
-            <button type="submit" class="btn-salvar">Salvar</button>
-            <button type="button" class="btn-cancelar" (click)="fecharModalCriarServico()">Cancelar</button>
-          </div>
-        </form>
-      </div>
+  <!-- Modal de criação de serviço -->
+  <div *ngIf="mostrarModalCriarServico" class="modal">
+    <div class="modal-conteudo">
+      <h2>Criar Serviço</h2>
+      <form (ngSubmit)="criarServico()" class="form-criar-servico">
+        <div class="input-content">
+          <input
+            type="text"
+            [(ngModel)]="novoServico.nomeServico"
+            name="nomeServico"
+            placeholder="Nome do Serviço"
+            maxlength="50"
+            required
+          />
+        </div>
+        <div class="input-content">
+          <textarea
+            [(ngModel)]="novoServico.descricaoServico"
+            name="descricaoServico"
+            placeholder="Descrição do Serviço"
+            maxlength="150"
+            required
+          ></textarea>
+        </div>
+        <div class="btn-group">
+          <button type="submit" class="btn-salvar">Salvar</button>
+          <button type="button" class="btn-cancelar" (click)="fecharModalCriarServico()">Cancelar</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <!-- Modal de alteração de serviço -->
-    <div *ngIf="mostrarModalAlterarServico" class="modal">
-      <div class="modal-conteudo">
-        <h2>Alterar Serviço</h2>
-        <form (ngSubmit)="atualizarServico()" class="form-alterar-servico">
-          <div class="input-content">
-            <input type="text" [(ngModel)]="servicoSelecionado.name" name="name" placeholder="Nome do Serviço" required />
-          </div>
-          <div class="input-content">
-            <textarea [(ngModel)]="servicoSelecionado.descricao" name="descricao" placeholder="Descrição do Serviço" required></textarea>
-          </div>
-          <div class="btn-group">
-            <button type="submit" class="btn-salvar">Salvar</button>
-            <button type="button" class="btn-cancelar" (click)="fecharModalAlterarServico()">Cancelar</button>
-          </div>
-        </form>
-      </div>
+  <!-- Modal de alteração de serviço -->
+  <div *ngIf="mostrarModalAlterarServico" class="modal">
+    <div class="modal-conteudo">
+      <h2>Alterar Serviço</h2>
+      <form (ngSubmit)="atualizarServico()" class="form-alterar-servico">
+        <div class="input-content">
+          <input
+            type="text"
+            [(ngModel)]="servicoSelecionado.name"
+            name="name"
+            placeholder="Nome do Serviço"
+            maxlength="50"
+            required
+          />
+        </div>
+        <div class="input-content">
+          <textarea
+            [(ngModel)]="servicoSelecionado.descricao"
+            name="descricao"
+            placeholder="Descrição do Serviço"
+            maxlength="150"
+            required
+          ></textarea>
+        </div>
+        <div class="btn-group">
+          <button type="submit" class="btn-salvar">Salvar</button>
+          <button type="button" class="btn-cancelar" (click)="fecharModalAlterarServico()">Cancelar</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-<!-- Seção padrão de serviços exibidos -->
-<section class="card-servicos" *ngIf="!mostrarMeusServicos">
-  <section class="card-grid">
-    <div class="card" *ngFor="let servico of servicosExibidos">
-      <h2 class="titulo-servico">{{ servico.name }}</h2>
-      <p class="descricao-servico">{{ servico.descricao }}</p>
-      <div class="botao-nome">
-        <img class="botao-servico" src="../../../assets/svg/Seta com circulo.png" alt="botão">
-        <span class="nome-medico">{{ servico.name_medico }}</span>
+  <!-- Seção padrão de serviços exibidos -->
+  <section class="card-servicos" *ngIf="!mostrarMeusServicos">
+    <section class="card-grid">
+      <div class="card" *ngFor="let servico of servicosExibidos">
+        <h2 class="titulo-servico">{{ servico.name.slice(0, 50) }}</h2>
+        <p class="descricao-servico">{{ servico.descricao.slice(0, 150) }}</p>
+        <div class="botao-nome">
+          <img class="botao-servico" src="../../../assets/svg/Seta com circulo.png" alt="botão" />
+          <span class="nome-medico">{{ servico.name_medico }}</span>
+        </div>
       </div>
-    </div>
+    </section>
   </section>
-</section>
 
-
-<!-- Seção para "Meus Serviços" -->
+  <!-- Seção para "Meus Serviços" -->
   <section class="meus-servicos" *ngIf="mostrarMeusServicos">
     <section class="card-servicos">
       <section class="card-grid">
         <div class="card" *ngFor="let servico of servicosMedicoExibidos">
-          <h2 class="titulo-servico">{{ servico.name }}</h2>
-          <p class="descricao-servico">{{ servico.descricao }}</p>
+          <h2 class="titulo-servico">{{ servico.name.slice(0, 50) }}</h2>
+          <p class="descricao-servico">{{ servico.descricao.slice(0, 150) }}</p>
           <div class="botao-nome">
             <button class="btn-alterar" (click)="alterarServico(servico)">Alterar</button>
             <button class="btn-excluir" (click)="excluirServico(servico)">Excluir</button>
