@@ -51,7 +51,6 @@ export class DefaultMedicosLayoutComponent implements OnInit {
             },
             (error) => {
                 console.error('Erro ao buscar perfil do usuário:', error);
-                // Lógica de tratamento de erro, se necessário
             }
         );
     }
@@ -59,12 +58,12 @@ export class DefaultMedicosLayoutComponent implements OnInit {
     carregarMedicos() {
         this.medicoService.buscarMedicos().subscribe(
             (data) => {
-                this.medicos = data; // Atualiza a lista de médicos com os dados recebidos do backend
+                console.log(data); // Adicione este log para verificar os dados
+                this.medicos = data; 
                 this.atualizarMedicosExibidos();
             },
             (error) => {
                 console.error('Erro ao buscar médicos:', error);
-                // Lógica de tratamento de erro, se necessário
             }
         );
     }
@@ -89,19 +88,53 @@ export class DefaultMedicosLayoutComponent implements OnInit {
         this.atualizarMedicosExibidos();
     }
 
+    verDetalhesMedico(medico: any) {
+        const medicoId = medico._id; 
+        console.log('ID do médico:', medicoId);
+        if (medicoId) {
+            this.router.navigate([`/medico-detail/${medicoId}`]);
+            this.gotoTop();
+        } else {
+            console.error('ID do médico é undefined');
+        }
+    }
+
+    gotoTop() {
+        const scrollDuration = 500;
+    
+        const cosParameter = window.scrollY / 2;
+        let scrollCount = 0;
+        let oldTimestamp = performance.now();
+    
+        function step(newTimestamp: number) {
+            const timestampDiff = newTimestamp - oldTimestamp;
+            if (scrollCount >= scrollDuration || window.scrollY === 0) return;
+    
+            scrollCount += Math.PI * timestampDiff / scrollDuration;
+            if (scrollCount >= Math.PI) return window.scrollTo(0, 0);
+    
+            window.scrollTo(0, Math.round(cosParameter + cosParameter * Math.cos(scrollCount)));
+            oldTimestamp = newTimestamp;
+            window.requestAnimationFrame(step);
+        }
+    
+        window.requestAnimationFrame(step);
+    }
+    
+
     submit() {
         this.onSubmit.emit();
-    }
-
-    navigate() {
+      }
+    
+      navigate() {
         this.onNavigate.emit();
-    }
-
-    entrar() {
+      }
+    
+      entrar() {
         this.onEntrar.emit();
-    }
-
-    goToProfile() {
+      }
+    
+      goToProfile() {
         this.router.navigate(['/profile']);
-    }
+      }
 }

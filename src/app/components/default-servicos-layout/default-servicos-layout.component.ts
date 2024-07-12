@@ -106,7 +106,7 @@ export class DefaultServicosLayoutComponent implements OnInit {
       (data) => {
         this.servicosMedico = data;
         this.atualizarServicosExibidos();
-        this.atualizarServicosMedicoExibidos(); // Certifique-se de chamar isso aqui se necessário
+        this.atualizarServicosMedicoExibidos();
       },
       (error) => {
         console.error('Erro ao buscar serviços:', error);
@@ -144,8 +144,8 @@ export class DefaultServicosLayoutComponent implements OnInit {
     this.servicoService.buscarServicosPorMedicoId(medicoId).subscribe(
       (data) => {
         this.servicosMedico = data;
-        this.mostrarMeusServicos = true; // Mostra a seção de "Meus Serviços"
-        this.atualizarServicosMedicoExibidos(); // Certifique-se de chamar isso aqui se necessário
+        this.mostrarMeusServicos = true; 
+        this.atualizarServicosMedicoExibidos(); 
       },
       (error) => {
         console.error('Erro ao buscar serviços do médico:', error);
@@ -219,7 +219,7 @@ export class DefaultServicosLayoutComponent implements OnInit {
   }
 
   alterarServico(servico: any) {
-    this.servicoSelecionado = { ...servico }; // Copia profunda do objeto para evitar referência direta
+    this.servicoSelecionado = { ...servico };
     this.mostrarModalAlterarServico = true;
   }
 
@@ -244,7 +244,7 @@ export class DefaultServicosLayoutComponent implements OnInit {
           this.atualizarServicosExibidos();
         }
         this.fecharModalAlterarServico();
-        this.buscarServicos2();
+        this.visualizarServicosMedico();
       },
       (error) => {
         console.error('Erro ao atualizar serviço:', error);
