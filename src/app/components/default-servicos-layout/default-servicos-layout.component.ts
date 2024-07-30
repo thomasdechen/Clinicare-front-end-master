@@ -262,7 +262,7 @@ export class DefaultServicosLayoutComponent implements OnInit {
           console.log('Serviço excluído com sucesso');
           this.atualizarListaServicosMedico(servicoId);
           this.toastr.success('Serviço excluído com sucesso.');
-          this.buscarServicos2();
+          this.visualizarServicosMedico();
         },
         error => {
           console.error('Erro ao excluir serviço:', error);

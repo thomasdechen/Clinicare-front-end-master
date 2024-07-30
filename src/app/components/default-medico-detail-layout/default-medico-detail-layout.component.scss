@@ -229,11 +229,65 @@ main {
       }
       
 
+      // Avaliações
     .avaliacao h2 {
         font-family: 'Outfit', sans-serif;
         font-weight: 500;
         font-size: 22px;
     }
+
+    .avalicoes-titulo {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500;
+        font-size: 18px;
+    }
+
+    .avaliacao-foto {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        object-fit: cover;
+        object-position: 100% 10%;
+    }
+
+    .card-avaliacoes article{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .avaliacao-estrelas {
+        margin-left: 40%;
+        width: 30%;
+    }
+
+    .name-data {
+        display: flex;
+        flex-direction: column !important;
+        padding: 5px 10px;
+    }
+
+    .paciente-name {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500;
+        font-size: 18px;
+        color: #015BB9;
+    }
+
+    .avaliacao-data {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 200;
+        font-size: 18px;
+    }
+
+    .avaliacao-comentario {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 300;
+        font-size: 18px;
+        padding: 20px 65px;
+    }
+
+
+    //Avaliações
 
     .column-direita article {
         background-color: $gray-bg;

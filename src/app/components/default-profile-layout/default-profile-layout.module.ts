@@ -10,7 +10,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
   imports: [
     CommonModule,
     ModalModule.forRoot()
-    // Importe outros módulos necessários, se houver
   ],
   exports: [
     DefaultProfileLayoutComponent

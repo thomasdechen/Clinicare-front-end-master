@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
           email: profile.email,
           role: profile.role,
           gender: profile.gender,
-          cpf: profile.cpf,  // Verifique se os campos condicionais estão sendo corretamente mapeados
+          cpf: profile.cpf,  
           telefone: profile.telefone,
           datanasc: profile.datanasc,
           sangue: profile.sangue,
