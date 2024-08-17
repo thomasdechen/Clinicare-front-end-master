@@ -47,7 +47,7 @@ export class SignupComponent {
       passwordConfirm: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
       role: new FormControl('paciente', { nonNullable: true, validators: [Validators.required] }),
       gender: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-      codigo: new FormControl<string | null>(null) // Inicializa com null e permite strings
+      codigo: new FormControl<string | null>(null)
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -63,14 +63,23 @@ export class SignupComponent {
       this.toastService.error("Por favor, preencha todos os campos corretamente.");
       return;
     }
-
+  
     const { name, email, password, role, gender, codigo } = this.signupForm.getRawValue();
+    
     this.loginService.signup(name, email, password, role, gender, codigo).subscribe({
       next: () => {
         this.toastService.success("Cadastro realizado com sucesso!");
         this.router.navigate(["/login"]);
       },
-      error: (error) => this.toastService.error(error.error || "Erro inesperado! Tente novamente mais tarde")
+      error: (error) => {
+        let errorMessage = "Erro inesperado! Tente novamente mais tarde";
+        if (error.error && typeof error.error === 'string') {
+          errorMessage = error.error;
+        } else if (error.error && error.error.message) {
+          errorMessage = error.error.message;
+        }
+        this.toastService.error(errorMessage);
+      }
     });
   }
 

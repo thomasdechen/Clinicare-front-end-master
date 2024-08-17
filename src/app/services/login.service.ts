@@ -23,7 +23,8 @@ export class LoginService {
   }
 
   signup(name: string, email: string, password: string, role: string, gender: string, codigo?: string | null): Observable<any> {
-    const payload: any = { name, email, password, role, gender };
+    const foto = gender === 'masculino' ? 'https://i.imgur.com/xCiixmR.jpg' : 'https://i.imgur.com/Ogi7OrP.jpg';
+    const payload: any = { name, email, password, role, gender, foto };
     if (codigo) {
       payload.codigo = codigo;
     }
