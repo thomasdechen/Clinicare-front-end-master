@@ -7,6 +7,7 @@ import { MedicoService } from '../../services/medico.service';
 import { AgendamentoService } from '../../services/agendamento.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DisponibilidadeService } from '../../services/disponibilidade.service';
+import { AvaliacaoService } from '../../services/avaliacao.service';
 
 @Component({
   selector: 'app-default-medico-detail-layout',
@@ -31,11 +32,24 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   selectedTime: string = '';
 
   medico: any;
+  paciente: any;
+  pacientesExibidos: any[] = [];
   avaliacao: string = '';
   horariosDisponiveis: string[] = [];
   activeSection: string = 'sobre';
   showAgendamento: boolean = false;
   agendamentoForm: FormGroup;
+
+  avaliacoes: any[] = [];
+  novaAvaliacao: any = { estrelas: 0, comentario: '' };
+  mostrarModalAvaliacao: boolean = false;
+  hoveredStar: number = 0;
+  isPaciente: boolean = false;
+  avaliacaoExistente: boolean = false;
+  avaliacoesExibidas: any[] = [];
+  paginaAtual: number = 1;
+  totalPaginas: number = 1;
+  avaliacoesPorPagina: number = 3;
 
   myFilter = (d: Date | null): boolean => {
     const date = (d || new Date()).toISOString().split('T')[0];
@@ -51,7 +65,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     private servicoService: ServicoService,
     private agendamentoService: AgendamentoService,
     private disponibilidadeService: DisponibilidadeService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private avaliacaoService: AvaliacaoService
   ) {
     this.agendamentoForm = this.fb.group({
       dataConsulta: ['']
@@ -59,14 +74,34 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadAvailableDates();
+    this.atualizarDisponibilidade();
     this.getMedicoDetail();
+    this.getPacienteDetail();
     this.checkLoginStatus();
     if (this.isLoggedIn) {
       this.fetchUserProfile();
     }
     this.verificarRole();
-    this.loadAvailableDates();
-    this.atualizarDisponibilidade();
+    this.carregarAvaliacoes();
+    this.verificarTipoUsuario();
+    this.verificarAvaliacaoExistente();
+    this.carregarPacientes();
+    
+  }
+
+  verificarTipoUsuario() {
+    this.isPaciente = sessionStorage.getItem('role') === 'paciente';
+  }
+  
+  verificarAvaliacaoExistente() {
+    const idPaciente = sessionStorage.getItem('id');
+    const idMedico = this.route.snapshot.paramMap.get('id');
+    if (idPaciente && idMedico) {
+      this.avaliacaoService.verificarAvaliacaoExistente(idPaciente, idMedico).subscribe(
+        existe => this.avaliacaoExistente = existe
+      );
+    }
   }
 
   checkLoginStatus() {
@@ -89,6 +124,22 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     );
   }
 
+  
+
+  carregarPacientes() {
+    this.userService.getUserProfile().subscribe(
+        (data) => {
+            console.log(data); 
+            this.paciente = data; 
+        },
+        (error) => {
+            console.error('Erro ao buscar pacientes:', error);
+        }
+    );
+
+    this.pacientesExibidos =  this.paciente
+}
+
   getMedicoDetail(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -103,6 +154,18 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       );
     }
   }
+
+  getPacienteDetail(): void {
+    this.userService.getUserProfile().subscribe(
+      data => {
+        this.paciente = data;
+      },
+      error => {
+        console.error('Erro ao buscar detalhes do paciente:', error);
+      }
+    );
+  }
+  
 
   loadAvailableDates() {
     const medicoId = this.route.snapshot.paramMap.get('id');
@@ -218,6 +281,147 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
 
   selectTime(time: string) {
     this.selectedTime = time;
+  }
+
+  carregarAvaliacoes() {
+    const medicoId = this.route.snapshot.paramMap.get('id');
+    const pacienteLogadoId = sessionStorage.getItem('id');
+  
+    if (medicoId) {
+      this.avaliacaoService.buscarAvaliacoesPorMedicoId(medicoId).subscribe(
+        (data) => {
+          // Separar a avaliação do paciente logado das outras avaliações
+          const avaliacaoPacienteLogado = data.find(av => av.idPaciente === pacienteLogadoId);
+          const outrasAvaliacoes = data.filter(av => av.idPaciente !== pacienteLogadoId);
+  
+          // Inverter a ordem das outras avaliações
+          outrasAvaliacoes.reverse();
+  
+          // Reordenar as avaliações com a do paciente logado em primeiro, seguida pelas outras em ordem inversa
+          this.avaliacoes = avaliacaoPacienteLogado ? [avaliacaoPacienteLogado, ...outrasAvaliacoes] : outrasAvaliacoes;
+  
+          this.carregarFotosPacientes();
+          this.totalPaginas = Math.ceil(this.avaliacoes.length / this.avaliacoesPorPagina);
+          this.atualizarAvaliacoesExibidas();
+        },
+        (error) => {
+          console.error('Erro ao buscar avaliações:', error);
+        }
+      );
+    }
+  }
+
+  carregarFotosPacientes() {
+    this.avaliacoes.forEach(avaliacao => {
+      this.userService.getPacienteById(avaliacao.idPaciente).subscribe(
+        (paciente) => {
+          avaliacao.fotoPaciente = paciente.foto || '../../../assets/svg/Médico 1.png';
+        },
+        (error) => {
+          console.error('Erro ao carregar foto do paciente:', error);
+          avaliacao.fotoPaciente = '../../../assets/svg/Médico 1.png';
+        }
+      );
+    });
+  }
+
+  abrirModalAvaliacao() {
+    this.mostrarModalAvaliacao = true;
+  }
+
+  fecharModalAvaliacao() {
+    this.mostrarModalAvaliacao = false;
+    this.novaAvaliacao = { estrelas: 0, comentario: '' };
+  }
+
+  criarAvaliacao() {
+    if (this.novaAvaliacao.estrelas === 0 || !this.novaAvaliacao.comentario.trim()) {
+      this.toastr.error('Por favor, preencha todos os campos da avaliação.');
+      return;
+    }
+
+    const medicoId = this.route.snapshot.paramMap.get('id');
+    const pacienteId = sessionStorage.getItem('id');
+    const pacienteName= sessionStorage.getItem('username');
+    const pacienteFoto= sessionStorage.getItem('foto');
+    
+    if (!medicoId || !pacienteId) {
+      this.toastr.error('Erro ao identificar médico ou paciente.');
+      return;
+    }
+
+    this.novaAvaliacao.idMedico = medicoId;
+    this.novaAvaliacao.idPaciente = pacienteId;
+    this.novaAvaliacao.namePaciente = pacienteName;
+    this.novaAvaliacao.fotoPaciente = pacienteFoto;
+
+    this.avaliacaoService.criarAvaliacao(this.novaAvaliacao).subscribe(
+      (novaAvaliacaoCriada) => {
+        // Recarregar todas as avaliações para garantir a ordem correta
+        this.carregarAvaliacoes();
+  
+        this.toastr.success('Avaliação criada com sucesso!');
+        this.fecharModalAvaliacao();
+        this.verificarAvaliacaoExistente();
+      },
+      (error) => {
+        console.error('Erro ao criar avaliação:', error);
+        this.toastr.error('Erro ao criar avaliação.');
+      }
+    );
+  }
+
+  isAvaliacaoPacienteLogado(avaliacao: any): boolean {
+    const pacienteLogadoId = sessionStorage.getItem('id');
+    return avaliacao.idPaciente === pacienteLogadoId;
+  }
+
+  
+  atualizarAvaliacoesExibidas() {
+    const pacienteLogadoId = sessionStorage.getItem('id');
+    
+    // Garantir que a avaliação do paciente logado esteja sempre na primeira página
+    const avaliacaoPacienteLogado = this.avaliacoes.find(av => av.idPaciente === pacienteLogadoId);
+    
+    let inicio = (this.paginaAtual - 1) * this.avaliacoesPorPagina;
+    let fim = inicio + this.avaliacoesPorPagina;
+  
+    if (avaliacaoPacienteLogado && this.paginaAtual === 1) {
+      // Se estamos na primeira página e existe uma avaliação do paciente logado
+      this.avaliacoesExibidas = [
+        avaliacaoPacienteLogado,
+        ...this.avaliacoes.filter(av => av.idPaciente !== pacienteLogadoId).slice(0, this.avaliacoesPorPagina - 1)
+      ];
+    } else {
+      // Para outras páginas ou se não houver avaliação do paciente logado
+      this.avaliacoesExibidas = this.avaliacoes.slice(inicio, fim);
+    }
+  }
+  
+  paginaAnterior() {
+    if (this.paginaAtual > 1) {
+      this.paginaAtual--;
+      this.atualizarAvaliacoesExibidas();
+    }
+  }
+  
+  proximaPagina() {
+    if (this.paginaAtual < this.totalPaginas) {
+      this.paginaAtual++;
+      this.atualizarAvaliacoesExibidas();
+    }
+  }
+
+  selecionarEstrela(star: number) {
+    this.novaAvaliacao.estrelas = star;
+  }
+
+  highlightStars(star: number) {
+    this.hoveredStar = star;
+  }
+
+  resetStars() {
+    this.hoveredStar = 0;
   }
 
   navigate() {

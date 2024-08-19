@@ -178,7 +178,7 @@ main {
 
     .menu-sobre.active,
     .menu-avaliacoes.active {
-      box-shadow: inset 0px -2px 0px 0px $primary-color;
+        box-shadow: inset 0px -2px 0px 0px $primary-color;
     }
 
     .styled-line {
@@ -211,29 +211,221 @@ main {
 
     .descricao-medico-container {
         margin-bottom: 20px;
-      
-        .descricao-medico-input {
-          width: 100%;
-          padding: 10px;
-          font-size: 14px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          resize: vertical;
-        }
-      
-        .descricao-info {
-          margin-top: 5px;
-          font-size: 12px;
-          color: #888;
-        }
-      }
-      
 
-    .avaliacao h2 {
-        font-family: 'Outfit', sans-serif;
-        font-weight: 500;
-        font-size: 22px;
+        .descricao-medico-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .descricao-info {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #888;
+        }
     }
+
+
+    // Avaliações
+    .avaliacao {
+
+        h2,
+        .avaliacoes-titulo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 22px;
+        }
+
+        .avaliacoes-titulo {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .card-avaliacoes {
+            margin-bottom: 20px;
+        }
+
+        .avaliacao-item {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .avaliacao-dados {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .avaliacao-foto {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: 100% 10%;
+            margin-right: 15px;
+        }
+
+        .name-data {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .paciente-name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 18px;
+            color: #015BB9;
+            margin-bottom: 5px;
+        }
+
+        .avaliacao-data {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 200;
+            font-size: 14px;
+        }
+
+        .avaliacao-estrelas {
+            font-size: 18px;
+            color: #ffd700;
+            margin-left: auto;
+        }
+
+        .avaliacao-comentario {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+            padding: 5px 0 10px 65px; // Ajustado para alinhar com o nome do paciente
+        }
+
+        .btn-avaliar {
+            background-color: #015BB9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            align-self: flex-start;
+            margin-top: 10px;
+        }
+
+        .paginacao {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            font-family: 'Outfit', sans-serif;
+        
+            button {
+              background-color: $primary-color;
+              color: white;
+              border: none;
+              padding: 8px 15px;
+              margin: 0 10px;
+              border-radius: 5px;
+              cursor: pointer;
+              font-family: 'Outfit', sans-serif;
+              font-size: 14px;
+              transition: background-color 0.3s ease;
+        
+              &:hover {
+                background-color: darken($primary-color, 10%);
+              }
+        
+              &:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+              }
+            }
+        
+            span {
+              font-size: 16px;
+              color: $text-color;
+            }
+          }
+    }
+
+    // Estilos para o modal de avaliação
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-conteudo {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: 80%;
+        max-width: 500px;
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .estrelas-input {
+            font-size: 24px;
+            color: #ffd700;
+            cursor: pointer;
+            margin-bottom: 15px;
+
+            .fa-star {
+                margin-right: 5px;
+            }
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: flex-end;
+
+            button {
+                margin-left: 10px;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-family: 'Outfit', sans-serif;
+                font-size: 16px;
+            }
+
+            .btn-salvar {
+                background-color: #015BB9;
+                color: white;
+            }
+
+            .btn-cancelar {
+                background-color: #ccc;
+                color: #333;
+            }
+        }
+    }
+
+
+
+    //Avaliações
 
     .column-direita article {
         background-color: $gray-bg;
@@ -288,6 +480,24 @@ main {
     .btn-agendar-consulta:hover {
         background-color: rgb(3, 91, 185);
     }
+
+    .btn-avaliar {
+        margin: 30px auto 0;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 300;
+        display: block;
+    }
+
+    .btn-avaliar:hover {
+        background-color: rgb(3, 91, 185);
+    }
+
 
     // Footer
     footer {

@@ -201,8 +201,16 @@ export class DefaultServicosLayoutComponent implements OnInit {
   }
 
   criarServico() {
+    if (!this.novoServico.nomeServico || !this.novoServico.descricaoServico || 
+        this.novoServico.nomeServico.trim().length === 0 || 
+        this.novoServico.descricaoServico.trim().length === 0) {
+      this.toastr.error('Por favor, preencha o nome e a descrição do serviço.');
+      return;
+    }
+  
     const nomeMedico = sessionStorage.getItem('username');
     this.novoServico.nomeMedico = nomeMedico;
+  
     this.servicoService.criarServico(this.novoServico).subscribe(
       (novoServicoCriado) => {
         // Adicionar o serviço criado à lista para atualização dinâmica na tela
@@ -225,19 +233,26 @@ export class DefaultServicosLayoutComponent implements OnInit {
 
   fecharModalAlterarServico() {
     this.mostrarModalAlterarServico = false;
-    // Limpar o objeto servicoSelecionado se necessário
     this.servicoSelecionado = {};
   }
   
   atualizarServico() {
+    // Validação dos campos
+    if (!this.servicoSelecionado.name || !this.servicoSelecionado.descricao || 
+        this.servicoSelecionado.name.trim().length === 0 || 
+        this.servicoSelecionado.descricao.trim().length === 0) {
+      this.toastr.error('Por favor, preencha o nome e a descrição do serviço.');
+      return;
+    }
+  
     const servicoId = this.servicoSelecionado._id;
     const servicoData = { ...this.servicoSelecionado };
-
+  
     this.servicoService.atualizarServico(servicoId, servicoData).subscribe(
       (response) => {
         console.log('Serviço atualizado com sucesso:', response);
         this.toastr.success('Serviço atualizado com sucesso.');
-
+  
         const index = this.servicos.findIndex(s => s._id === servicoId);
         if (index !== -1) {
           this.servicos[index] = response; 
@@ -262,7 +277,7 @@ export class DefaultServicosLayoutComponent implements OnInit {
           console.log('Serviço excluído com sucesso');
           this.atualizarListaServicosMedico(servicoId);
           this.toastr.success('Serviço excluído com sucesso.');
-          this.buscarServicos2();
+          this.visualizarServicosMedico();
         },
         error => {
           console.error('Erro ao excluir serviço:', error);

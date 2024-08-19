@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
           email: profile.email,
           role: profile.role,
           gender: profile.gender,
-          cpf: profile.cpf,  // Verifique se os campos condicionais estão sendo corretamente mapeados
+          cpf: profile.cpf,  
           telefone: profile.telefone,
           datanasc: profile.datanasc,
           sangue: profile.sangue,
@@ -90,12 +90,20 @@ export class ProfileComponent implements OnInit {
     if (!profileData.password) {
       delete profileData.password;
     }
+    
+    const oldEmail = this.loggedInUser?.email;
+    
     this.userService.updateUserProfile(profileData).subscribe({
-      next: () => {
+      next: (updatedUser) => {
         this.toastService.success('Perfil atualizado com sucesso!');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+        
+        if (oldEmail !== updatedUser.email) {
+          this.handleEmailChange(updatedUser.email);
+        } else {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        }
       },
       error: () => {
         this.toastService.error('Erro ao atualizar perfil, digite a senha corretamente!');
@@ -103,6 +111,12 @@ export class ProfileComponent implements OnInit {
     });
   }
   
+  handleEmailChange(newEmail: string): void {
+    this.logout_email();
+    
+    this.toastService.info('E-mail alterado. Por favor, faça login novamente.');
+    
+  }
 
   navigateToHome(): void {
     // Implementar a navegação para outra página (por exemplo, página inicial)
@@ -117,6 +131,17 @@ export class ProfileComponent implements OnInit {
 
     // Armazenar a mensagem de logout na sessionStorage
     sessionStorage.setItem('logout-message', 'Logout realizado com sucesso!');
+
+    // Redirecionar para a página de login
+    this.router.navigate(['/login']);
+  }
+
+  logout_email(): void {
+    // Limpar session storage
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('id');
+    sessionStorage.removeItem('role');
 
     // Redirecionar para a página de login
     this.router.navigate(['/login']);

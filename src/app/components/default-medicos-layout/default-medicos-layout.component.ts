@@ -58,7 +58,7 @@ export class DefaultMedicosLayoutComponent implements OnInit {
     carregarMedicos() {
         this.medicoService.buscarMedicos().subscribe(
             (data) => {
-                console.log(data); // Adicione este log para verificar os dados
+                console.log(data); 
                 this.medicos = data; 
                 this.atualizarMedicosExibidos();
             },

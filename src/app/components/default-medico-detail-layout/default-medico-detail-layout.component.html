@@ -46,7 +46,7 @@
         <hr class="styled-line">
         <article class="sobre-avaliacoes" *ngIf="!showAgendamento">
           <article class="sobre" *ngIf="activeSection === 'sobre'">
-            <p class="sobre-titulo">Sobre o<span class="sobre-medico"> {{ medico.name }}</span></p>
+            <p class="sobre-titulo">Sobre <span class="sobre-medico"> {{ medico.name }}</span></p>
             <p>{{ medico.descricao }}</p>
             <p class="descricao-medico">{{ medico.name }} é um(a) renomado(a) {{ medico.especialidade }} com
               especialização em terapias manuais e reabilitação neuromusculoesquelética. Com mais de uma década de
@@ -57,18 +57,63 @@
               instituições internacionais, aprimorando suas habilidades em terapias inovadoras.</p>
           </article>
           <article class="avaliacao" *ngIf="activeSection === 'avaliacoes'">
-            <!-- Conteúdo da seção de Avaliações -->
+            <h3 class="avaliacoes-titulo">Todas as Avaliações ({{ avaliacoes.length }})</h3>
+            <section class="card-avaliacoes">
+              <article class="avaliacao-item" *ngFor="let avaliacao of avaliacoesExibidas" [ngClass]="{'avaliacao-paciente-logado': isAvaliacaoPacienteLogado(avaliacao)}">
+                <article class="avaliacao-dados">
+                  <img [src]="avaliacao.fotoPaciente" alt="Foto do paciente" class="avaliacao-foto">
+                  <article class="name-data">
+                    <span class="paciente-name">{{ avaliacao.namePaciente }}</span>
+                    <span class="avaliacao-data">{{ avaliacao.criadoEm | date:'dd MMMM yyyy':'':'pt-BR' }}</span>
+                  </article>
+                  <div class="avaliacao-estrelas">
+                    <span *ngFor="let star of [1,2,3,4,5]">
+                      <i [class]="star <= avaliacao.estrelas ? 'fas fa-star' : 'far fa-star'"></i>
+                    </span>
+                  </div>
+                </article>
+                <article class="avaliacao-comentario">
+                  <p>{{ avaliacao.comentario }}</p>
+                </article>
+              </article>
+            </section>
+            <div class="paginacao">
+              <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">Anterior</button>
+              <span>Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+              <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">Próxima</button>
+            </div>
+            <button *ngIf="isPaciente && !avaliacaoExistente" class="btn-avaliar" (click)="abrirModalAvaliacao()">Avaliar</button>
           </article>
+
+          <!-- Modal de criação de avaliação -->
+          <div *ngIf="mostrarModalAvaliacao" class="modal">
+            <div class="modal-conteudo">
+              <h2>Avaliar Médico</h2>
+              <form (ngSubmit)="criarAvaliacao()" class="form-avaliacao">
+                <div class="estrelas-input">
+                  <span *ngFor="let star of [1,2,3,4,5]" (click)="selecionarEstrela(star)">
+                    <i class="fa-star" [ngClass]="{'fas': star <= novaAvaliacao.estrelas, 'far': star > novaAvaliacao.estrelas}"></i>
+                  </span>
+                </div>
+                <textarea [(ngModel)]="novaAvaliacao.comentario" name="comentario" placeholder="Deixe seu comentário" maxlength="500" required></textarea>
+                <div class="btn-group">
+                  <button type="submit" class="btn-salvar">Enviar Avaliação</button>
+                  <button type="button" class="btn-cancelar" (click)="fecharModalAvaliacao()">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </article>
         <!-- Seção de Agendamento -->
         <article class="agendamento" *ngIf="showAgendamento">
           <mat-form-field appearance="fill">
             <mat-label>Escolha uma data</mat-label>
-            <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+            <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker"
+              (dateChange)="onDateChange($event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-        
+
           <div *ngIf="availableTimes.length > 0">
             <mat-form-field appearance="fill">
               <mat-label>Escolha um horário</mat-label>
@@ -76,7 +121,7 @@
                 <mat-option *ngFor="let time of availableTimes" [value]="time">{{time}}</mat-option>
               </mat-select>
             </mat-form-field>
-        
+
             <button mat-raised-button color="primary" (click)="submitForm()">Agendar Consulta</button>
           </div>
         </article>
