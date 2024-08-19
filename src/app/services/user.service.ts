@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,17 @@ export class UserService {
   private apiUrl: string = "http://localhost:8080/user";
 
   constructor(private http: HttpClient) { }
+
+  getPacienteById(id: string): Observable<any> {
+    const token = sessionStorage.getItem('auth-token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<any>(`${this.apiUrl}/paciente/${id}`, { headers });
+  }
 
   getUserProfile(): Observable<any> {
     const token = sessionStorage.getItem('auth-token');
@@ -149,5 +161,10 @@ export class UserService {
     }
 
     return this.http.delete<any>(endpoint, { headers });
+  }
+
+  refreshToken(email: string): Observable<string> {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/auth/refresh-token`, { email })
+      .pipe(map((response: { token: string }) => response.token));
   }
 }

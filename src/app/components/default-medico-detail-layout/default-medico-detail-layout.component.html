@@ -57,21 +57,52 @@
               instituições internacionais, aprimorando suas habilidades em terapias inovadoras.</p>
           </article>
           <article class="avaliacao" *ngIf="activeSection === 'avaliacoes'">
-            <h3 class="avalicoes-titulo">Todas as Avaliações()</h3>
+            <h3 class="avaliacoes-titulo">Todas as Avaliações ({{ avaliacoes.length }})</h3>
             <section class="card-avaliacoes">
-              <article class="avaliacao-dados">
-                <img src="../../../assets/svg/Médico 1.png" alt="" class="avaliacao-foto">
-                <article class="name-data">
-                  <span class="paciente-name">Thomas Dechen</span>
-                  <span class="avaliacao-data">18 março 2024</span>
+              <article class="avaliacao-item" *ngFor="let avaliacao of avaliacoesExibidas" [ngClass]="{'avaliacao-paciente-logado': isAvaliacaoPacienteLogado(avaliacao)}">
+                <article class="avaliacao-dados">
+                  <img [src]="avaliacao.fotoPaciente" alt="Foto do paciente" class="avaliacao-foto">
+                  <article class="name-data">
+                    <span class="paciente-name">{{ avaliacao.namePaciente }}</span>
+                    <span class="avaliacao-data">{{ avaliacao.criadoEm | date:'dd MMMM yyyy':'':'pt-BR' }}</span>
+                  </article>
+                  <div class="avaliacao-estrelas">
+                    <span *ngFor="let star of [1,2,3,4,5]">
+                      <i [class]="star <= avaliacao.estrelas ? 'fas fa-star' : 'far fa-star'"></i>
+                    </span>
+                  </div>
                 </article>
-                <img src="../../../assets/svg/5 estrelas.png" alt="" class="avaliacao-estrelas">
-              </article>
-              <article class="avaliacao-comentario">
-                <p>Excelente!</p>
+                <article class="avaliacao-comentario">
+                  <p>{{ avaliacao.comentario }}</p>
+                </article>
               </article>
             </section>
+            <div class="paginacao">
+              <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">Anterior</button>
+              <span>Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+              <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">Próxima</button>
+            </div>
+            <button *ngIf="isPaciente && !avaliacaoExistente" class="btn-avaliar" (click)="abrirModalAvaliacao()">Avaliar</button>
           </article>
+
+          <!-- Modal de criação de avaliação -->
+          <div *ngIf="mostrarModalAvaliacao" class="modal">
+            <div class="modal-conteudo">
+              <h2>Avaliar Médico</h2>
+              <form (ngSubmit)="criarAvaliacao()" class="form-avaliacao">
+                <div class="estrelas-input">
+                  <span *ngFor="let star of [1,2,3,4,5]" (click)="selecionarEstrela(star)">
+                    <i class="fa-star" [ngClass]="{'fas': star <= novaAvaliacao.estrelas, 'far': star > novaAvaliacao.estrelas}"></i>
+                  </span>
+                </div>
+                <textarea [(ngModel)]="novaAvaliacao.comentario" name="comentario" placeholder="Deixe seu comentário" maxlength="500" required></textarea>
+                <div class="btn-group">
+                  <button type="submit" class="btn-salvar">Enviar Avaliação</button>
+                  <button type="button" class="btn-cancelar" (click)="fecharModalAvaliacao()">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </article>
         <!-- Seção de Agendamento -->
         <article class="agendamento" *ngIf="showAgendamento">
