@@ -51,6 +51,10 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   totalPaginas: number = 1;
   avaliacoesPorPagina: number = 3;
 
+  mostrarModalAlterarAvaliacao: boolean = false;
+  avaliacaoSelecionada: any = {};
+
+
   myFilter = (d: Date | null): boolean => {
     const date = (d || new Date()).toISOString().split('T')[0];
     return this.availableDates.has(date);
@@ -87,13 +91,36 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     this.verificarTipoUsuario();
     this.verificarAvaliacaoExistente();
     this.carregarPacientes();
-    
+
+    // const pacienteLogadoId = sessionStorage.getItem('id');
+    // this.avaliacoes.push({
+    //   id: '999',
+    //   idPaciente: pacienteLogadoId,
+    //   namePaciente: 'Teste',
+    //   estrelas: 5,
+    //   comentario: 'Avaliação de teste',
+    //   criadoEm: new Date()
+    // });
   }
 
   verificarTipoUsuario() {
     this.isPaciente = sessionStorage.getItem('role') === 'paciente';
   }
-  
+
+  carregarPacientes() {
+    this.userService.getUserProfile().subscribe(
+      (data) => {
+        console.log(data);
+        this.paciente = data;
+      },
+      (error) => {
+        console.error('Erro ao buscar pacientes:', error);
+      }
+    );
+
+    this.pacientesExibidos = this.paciente
+  }
+
   verificarAvaliacaoExistente() {
     const idPaciente = sessionStorage.getItem('id');
     const idMedico = this.route.snapshot.paramMap.get('id');
@@ -124,21 +151,6 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     );
   }
 
-  
-
-  carregarPacientes() {
-    this.userService.getUserProfile().subscribe(
-        (data) => {
-            console.log(data); 
-            this.paciente = data; 
-        },
-        (error) => {
-            console.error('Erro ao buscar pacientes:', error);
-        }
-    );
-
-    this.pacientesExibidos =  this.paciente
-}
 
   getMedicoDetail(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -165,7 +177,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       }
     );
   }
-  
+
 
   loadAvailableDates() {
     const medicoId = this.route.snapshot.paramMap.get('id');
@@ -214,25 +226,25 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     this.activeSection = section;
   }
 
-  
+
   submitForm() {
     const medicoId = this.medico._id;
     const pacienteId = this.userProfile._id;
     const dataConsulta = this.selectedDate;
     const horaConsulta = this.selectedTime;
-  
+
     // Verifique se dataConsulta não está vazio
     if (!dataConsulta || dataConsulta.trim() === '') {
       this.toastr.error('Por favor, selecione uma data para a consulta.');
       return;
     }
-  
+
     // Verifique se horaConsulta não está vazio
     if (!horaConsulta || horaConsulta.trim() === '') {
       this.toastr.error('Por favor, selecione um horário para a consulta.');
       return;
     }
-  
+
     // Construa o objeto de agendamento
     const agendamentoData = {
       medico: { id: medicoId },
@@ -241,7 +253,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       hora: horaConsulta,
       // Adicione outros campos conforme necessário (preço, local, etc.)
     };
-  
+
     // Envie a requisição para agendar a consulta
     this.agendamentoService.agendarConsulta(agendamentoData).subscribe(
       (response) => {
@@ -254,7 +266,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       }
     );
   }
-  
+
 
   goToMedicoDetail(medicoId: string): void {
     this.router.navigate(['/medicos', medicoId]);
@@ -286,23 +298,29 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   carregarAvaliacoes() {
     const medicoId = this.route.snapshot.paramMap.get('id');
     const pacienteLogadoId = sessionStorage.getItem('id');
-  
     if (medicoId) {
       this.avaliacaoService.buscarAvaliacoesPorMedicoId(medicoId).subscribe(
         (data) => {
-          // Separar a avaliação do paciente logado das outras avaliações
+          console.log('Avaliações recebidas:', data);
+          console.log('ID do paciente logado:', pacienteLogadoId);
+
           const avaliacaoPacienteLogado = data.find(av => av.idPaciente === pacienteLogadoId);
           const outrasAvaliacoes = data.filter(av => av.idPaciente !== pacienteLogadoId);
-  
-          // Inverter a ordem das outras avaliações
-          outrasAvaliacoes.reverse();
-  
-          // Reordenar as avaliações com a do paciente logado em primeiro, seguida pelas outras em ordem inversa
+
+          // Ordenar as outras avaliações por data (mais recente primeiro)
+          outrasAvaliacoes.sort((a, b) => new Date(b.criadoEm).getTime() - new Date(a.criadoEm).getTime());
+
           this.avaliacoes = avaliacaoPacienteLogado ? [avaliacaoPacienteLogado, ...outrasAvaliacoes] : outrasAvaliacoes;
-  
+
+          console.log('Avaliações ordenadas:', this.avaliacoes);
+
           this.carregarFotosPacientes();
           this.totalPaginas = Math.ceil(this.avaliacoes.length / this.avaliacoesPorPagina);
           this.atualizarAvaliacoesExibidas();
+
+          this.avaliacoes = avaliacaoPacienteLogado ? [avaliacaoPacienteLogado, ...outrasAvaliacoes] : outrasAvaliacoes;
+
+          this.carregarFotosPacientes();
         },
         (error) => {
           console.error('Erro ao buscar avaliações:', error);
@@ -310,6 +328,14 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       );
     }
   }
+
+  atualizarAvaliacoesExibidas() {
+    const inicio = (this.paginaAtual - 1) * this.avaliacoesPorPagina;
+    const fim = inicio + this.avaliacoesPorPagina;
+    this.avaliacoesExibidas = this.avaliacoes.slice(inicio, fim);
+    console.log('Avaliações exibidas:', this.avaliacoesExibidas);
+  }
+
 
   carregarFotosPacientes() {
     this.avaliacoes.forEach(avaliacao => {
@@ -340,11 +366,16 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       return;
     }
 
+    if (this.novaAvaliacao.comentario.length > 80) {
+      this.toastr.error('O comentário não pode exceder 80 caracteres.');
+      return;
+    }
+
     const medicoId = this.route.snapshot.paramMap.get('id');
     const pacienteId = sessionStorage.getItem('id');
-    const pacienteName= sessionStorage.getItem('username');
-    const pacienteFoto= sessionStorage.getItem('foto');
-    
+    const pacienteName = sessionStorage.getItem('username');
+    const pacienteFoto = sessionStorage.getItem('foto');
+
     if (!medicoId || !pacienteId) {
       this.toastr.error('Erro ao identificar médico ou paciente.');
       return;
@@ -359,7 +390,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       (novaAvaliacaoCriada) => {
         // Recarregar todas as avaliações para garantir a ordem correta
         this.carregarAvaliacoes();
-  
+
         this.toastr.success('Avaliação criada com sucesso!');
         this.fecharModalAvaliacao();
         this.verificarAvaliacaoExistente();
@@ -373,38 +404,86 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
 
   isAvaliacaoPacienteLogado(avaliacao: any): boolean {
     const pacienteLogadoId = sessionStorage.getItem('id');
-    return avaliacao.idPaciente === pacienteLogadoId;
+    return avaliacao.idPaciente.toString() === pacienteLogadoId;
   }
 
-  
-  atualizarAvaliacoesExibidas() {
-    const pacienteLogadoId = sessionStorage.getItem('id');
-    
-    // Garantir que a avaliação do paciente logado esteja sempre na primeira página
-    const avaliacaoPacienteLogado = this.avaliacoes.find(av => av.idPaciente === pacienteLogadoId);
-    
-    let inicio = (this.paginaAtual - 1) * this.avaliacoesPorPagina;
-    let fim = inicio + this.avaliacoesPorPagina;
-  
-    if (avaliacaoPacienteLogado && this.paginaAtual === 1) {
-      // Se estamos na primeira página e existe uma avaliação do paciente logado
-      this.avaliacoesExibidas = [
-        avaliacaoPacienteLogado,
-        ...this.avaliacoes.filter(av => av.idPaciente !== pacienteLogadoId).slice(0, this.avaliacoesPorPagina - 1)
-      ];
-    } else {
-      // Para outras páginas ou se não houver avaliação do paciente logado
-      this.avaliacoesExibidas = this.avaliacoes.slice(inicio, fim);
+  private atualizarListaAvaliacoes(avaliacaoIdExcluido: string) {
+    this.avaliacoes = this.avaliacoes.filter(avaliacao => avaliacao._id !== avaliacaoIdExcluido);
+    this.atualizarAvaliacoesExibidas();
+  }
+
+  abrirModalAlterarAvaliacao(avaliacao: any) {
+    this.avaliacaoSelecionada = { ...avaliacao };
+    this.mostrarModalAlterarAvaliacao = true;
+  }
+
+  excluirAvaliacao(id: string) {
+    if (confirm('Tem certeza que deseja excluir esta avaliação?')) {
+      this.avaliacaoService.excluirAvaliacao(id).subscribe(
+        () => {
+          this.toastr.success('Avaliação excluída com sucesso!');
+          this.avaliacoes = this.avaliacoes.filter(av => av.id !== id);
+          this.recalcularPaginacao();
+          this.verificarAvaliacaoExistente();
+          this.carregarAvaliacoes();
+          this.carregarPacientes();
+        },
+        (error) => {
+          console.error('Erro ao excluir avaliação:', error);
+          this.toastr.error('Erro ao excluir avaliação.');
+        }
+      );
     }
   }
-  
+
+
+  alterarAvaliacao() {
+    if (this.avaliacaoSelecionada.estrelas === 0 || !this.avaliacaoSelecionada.comentario.trim()) {
+      this.toastr.error('Por favor, preencha todos os campos da avaliação.');
+      return;
+    }
+
+    if (this.avaliacaoSelecionada.comentario.length > 80) {
+      this.toastr.error('O comentário não pode exceder 80 caracteres.');
+      return;
+    }
+
+    this.avaliacaoService.alterarAvaliacao(this.avaliacaoSelecionada).subscribe(
+      (avaliacaoAlterada) => {
+        this.toastr.success('Avaliação alterada com sucesso!');
+        this.fecharModalAlterarAvaliacao();
+        this.carregarAvaliacoes();
+      },
+      (error) => {
+        console.error('Erro ao alterar avaliação:', error);
+        this.toastr.error('Erro ao alterar avaliação.');
+      }
+    );
+  }
+
+  recalcularPaginacao() {
+    this.totalPaginas = Math.ceil(this.avaliacoes.length / this.avaliacoesPorPagina);
+
+    // Se a página atual for maior que o total de páginas, ajusta para a última página
+    if (this.paginaAtual > this.totalPaginas) {
+      this.paginaAtual = this.totalPaginas || 1; // Se não houver páginas, define como 1
+    }
+
+    this.atualizarAvaliacoesExibidas();
+  }
+
+  fecharModalAlterarAvaliacao() {
+    this.mostrarModalAlterarAvaliacao = false;
+    this.avaliacaoSelecionada = {};
+  }
+
   paginaAnterior() {
     if (this.paginaAtual > 1) {
       this.paginaAtual--;
       this.atualizarAvaliacoesExibidas();
     }
   }
-  
+
   proximaPagina() {
     if (this.paginaAtual < this.totalPaginas) {
       this.paginaAtual++;
@@ -412,9 +491,12 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     }
   }
 
+
   selecionarEstrela(star: number) {
     this.novaAvaliacao.estrelas = star;
   }
+
+
 
   highlightStars(star: number) {
     this.hoveredStar = star;

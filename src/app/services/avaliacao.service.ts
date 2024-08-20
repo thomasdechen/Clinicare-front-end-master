@@ -24,5 +24,12 @@ export class AvaliacaoService {
     return this.http.get<boolean>(`${this.apiUrl}/verificar/${idPaciente}/${idMedico}`);
   }
 
+  alterarAvaliacao(avaliacaoRequest: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/alterar/${avaliacaoRequest.id}`, avaliacaoRequest);
+  }
+  
+  excluirAvaliacao(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/excluir/${id}`);
+  }
   
 }
