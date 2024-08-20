@@ -21,6 +21,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   @Input() disablePrimaryBtn: boolean = true;
   @Output("submit") onSubmit = new EventEmitter();
   @Output("navigate") onNavigate = new EventEmitter();
+  @Output("navigate-medico") onNavigateMedico = new EventEmitter();
   @Output("entrar") onEntrar = new EventEmitter();
 
   availableDates: Set<string> = new Set();
@@ -110,7 +111,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   carregarPacientes() {
     this.userService.getUserProfile().subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
         this.paciente = data;
       },
       (error) => {
@@ -224,6 +225,14 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
 
   setActiveSection(section: string): void {
     this.activeSection = section;
+    if (section !== 'agendar') {
+      this.showAgendamento = false;
+    }
+  }
+
+  showAgendamentoSection() {
+    this.activeSection = 'agendar';
+    this.showAgendamento = true;
   }
 
 
@@ -301,8 +310,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     if (medicoId) {
       this.avaliacaoService.buscarAvaliacoesPorMedicoId(medicoId).subscribe(
         (data) => {
-          console.log('Avaliações recebidas:', data);
-          console.log('ID do paciente logado:', pacienteLogadoId);
+          // console.log('Avaliações recebidas:', data);
+          // console.log('ID do paciente logado:', pacienteLogadoId);
 
           const avaliacaoPacienteLogado = data.find(av => av.idPaciente === pacienteLogadoId);
           const outrasAvaliacoes = data.filter(av => av.idPaciente !== pacienteLogadoId);
@@ -312,7 +321,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
 
           this.avaliacoes = avaliacaoPacienteLogado ? [avaliacaoPacienteLogado, ...outrasAvaliacoes] : outrasAvaliacoes;
 
-          console.log('Avaliações ordenadas:', this.avaliacoes);
+          // console.log('Avaliações ordenadas:', this.avaliacoes);
 
           this.carregarFotosPacientes();
           this.totalPaginas = Math.ceil(this.avaliacoes.length / this.avaliacoesPorPagina);
@@ -333,7 +342,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     const inicio = (this.paginaAtual - 1) * this.avaliacoesPorPagina;
     const fim = inicio + this.avaliacoesPorPagina;
     this.avaliacoesExibidas = this.avaliacoes.slice(inicio, fim);
-    console.log('Avaliações exibidas:', this.avaliacoesExibidas);
+    // console.log('Avaliações exibidas:', this.avaliacoesExibidas);
   }
 
 
@@ -464,9 +473,9 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   recalcularPaginacao() {
     this.totalPaginas = Math.ceil(this.avaliacoes.length / this.avaliacoesPorPagina);
 
-    // Se a página atual for maior que o total de páginas, ajusta para a última página
+
     if (this.paginaAtual > this.totalPaginas) {
-      this.paginaAtual = this.totalPaginas || 1; // Se não houver páginas, define como 1
+      this.paginaAtual = this.totalPaginas || 1; 
     }
 
     this.atualizarAvaliacoesExibidas();
@@ -492,8 +501,12 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   }
 
 
-  selecionarEstrela(star: number) {
-    this.novaAvaliacao.estrelas = star;
+  selecionarEstrela(star: number, isAlteracao: boolean = false) {
+    if (isAlteracao) {
+      this.avaliacaoSelecionada.estrelas = star;
+    } else {
+      this.novaAvaliacao.estrelas = star;
+    }
   }
 
 
@@ -510,6 +523,10 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     this.onNavigate.emit();
   }
 
+  navigate_medico() {
+    this.onNavigateMedico.emit();
+  }
+
   entrar() {
     this.onEntrar.emit();
   }
@@ -518,7 +535,4 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 
-  showAgendamentoSection() {
-    this.showAgendamento = true;
-  }
 }
