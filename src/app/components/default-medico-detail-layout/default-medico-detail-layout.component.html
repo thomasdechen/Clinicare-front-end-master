@@ -143,15 +143,14 @@
           </div>
         </article>
         <!-- Seção de Agendamento -->
-        <article class="agendamento" *ngIf="activeSection === 'agendar'">
+        <section class="agendamento" *ngIf="activeSection === 'agendar'">
           <mat-form-field appearance="fill">
             <mat-label>Escolha uma data</mat-label>
-            <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker"
-              (dateChange)="onDateChange($event)">
+            <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" (dateChange)="onDateChange($event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-
+        
           <div *ngIf="availableTimes.length > 0">
             <mat-form-field appearance="fill">
               <mat-label>Escolha um horário</mat-label>
@@ -159,10 +158,10 @@
                 <mat-option *ngFor="let time of availableTimes" [value]="time">{{time}}</mat-option>
               </mat-select>
             </mat-form-field>
-
-            <button mat-raised-button color="primary" (click)="submitForm()">Agendar Consulta</button>
+        
+            <button mat-raised-button color="primary" (click)="agendar()">Agendar Consulta</button>
           </div>
-        </article>
+        </section>
 
       </section>
     </section>
