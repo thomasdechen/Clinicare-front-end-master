@@ -8,6 +8,7 @@ import { AgendamentoService } from '../../services/agendamento.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DisponibilidadeService } from '../../services/disponibilidade.service';
 import { AvaliacaoService } from '../../services/avaliacao.service';
+import { Agendamento } from '../../models/agendamento';
 
 @Component({
   selector: 'app-default-medico-detail-layout',
@@ -26,14 +27,10 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
 
   availableDates: Set<string> = new Set();
   availableTimes: string[] = [];
-  selectedDate: string = '';
   userProfile: any = {};
   isLoggedIn: boolean = false;
   isMedico: boolean = false;
-  selectedTime: string = '';
 
-  medico: any;
-  paciente: any;
   pacientesExibidos: any[] = [];
   avaliacao: string = '';
   horariosDisponiveis: string[] = [];
@@ -54,6 +51,11 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
 
   mostrarModalAlterarAvaliacao: boolean = false;
   avaliacaoSelecionada: any = {};
+
+  medico: any;
+  paciente: any;
+  selectedDate: string = '';
+  selectedTime: string = '';
 
 
   myFilter = (d: Date | null): boolean => {
@@ -102,6 +104,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     //   comentario: 'Avaliação de teste',
     //   criadoEm: new Date()
     // });
+
+    
   }
 
   verificarTipoUsuario() {
@@ -159,7 +163,6 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       this.medicoService.buscarMedicoPorId(id).subscribe(
         data => {
           this.medico = data;
-          this.loadAvailableDates();
         },
         error => {
           console.error('Erro ao buscar detalhes do médico:', error);
@@ -175,6 +178,39 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
       },
       error => {
         console.error('Erro ao buscar detalhes do paciente:', error);
+      }
+    );
+  }
+
+  agendar(): void {
+    const medicoId = this.route.snapshot.paramMap.get('id');
+    const pacienteId = sessionStorage.getItem('id');
+
+    if (!medicoId || !pacienteId) {
+      // Exibir uma mensagem de erro ou realizar alguma ação apropriada
+      return;
+    }
+
+    const agendamento: Agendamento = {
+      idMedico: parseInt(medicoId),
+      idPaciente: parseInt(pacienteId),
+      dia: this.selectedDate,
+      hora: this.selectedTime,
+      //preco: this.medico.preco,
+      status: 'Agendado',
+      local: this.medico.endereco,
+      especialidadeMedico: this.medico.especialidade,
+      //nomeMedico: this.medico.nome
+    };
+
+    this.agendamentoService.criarAgendamento(agendamento).subscribe(
+      () => {
+        // Exibir uma mensagem de sucesso ou redirecionar para outra página
+        this.router.navigate(['/perfil']);
+      },
+      error => {
+        console.error('Erro ao agendar consulta:', error);
+        // Exibir uma mensagem de erro
       }
     );
   }
@@ -233,47 +269,6 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   showAgendamentoSection() {
     this.activeSection = 'agendar';
     this.showAgendamento = true;
-  }
-
-
-  submitForm() {
-    const medicoId = this.medico._id;
-    const pacienteId = this.userProfile._id;
-    const dataConsulta = this.selectedDate;
-    const horaConsulta = this.selectedTime;
-
-    // Verifique se dataConsulta não está vazio
-    if (!dataConsulta || dataConsulta.trim() === '') {
-      this.toastr.error('Por favor, selecione uma data para a consulta.');
-      return;
-    }
-
-    // Verifique se horaConsulta não está vazio
-    if (!horaConsulta || horaConsulta.trim() === '') {
-      this.toastr.error('Por favor, selecione um horário para a consulta.');
-      return;
-    }
-
-    // Construa o objeto de agendamento
-    const agendamentoData = {
-      medico: { id: medicoId },
-      paciente: { id: pacienteId },
-      dia: dataConsulta, // Certifique-se de que dataConsulta está preenchido corretamente
-      hora: horaConsulta,
-      // Adicione outros campos conforme necessário (preço, local, etc.)
-    };
-
-    // Envie a requisição para agendar a consulta
-    this.agendamentoService.agendarConsulta(agendamentoData).subscribe(
-      (response) => {
-        this.toastr.success('Consulta agendada com sucesso!');
-        // Lógica adicional após o agendamento
-      },
-      (error) => {
-        console.error('Erro ao agendar consulta:', error);
-        this.toastr.error('Erro ao agendar consulta.');
-      }
-    );
   }
 
 
