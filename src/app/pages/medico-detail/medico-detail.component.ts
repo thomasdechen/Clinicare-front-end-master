@@ -18,6 +18,10 @@ export class MedicoDetailComponent {
     this.router.navigate(["login"])
   }
 
+  navigate_medico(){
+    window.location.reload();
+  }
+
   entrar(){
     this.router.navigate(["login"])
   }

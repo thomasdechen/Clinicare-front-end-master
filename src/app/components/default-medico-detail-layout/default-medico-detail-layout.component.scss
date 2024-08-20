@@ -94,6 +94,7 @@ main {
     }
 
     /* Medico detail */
+
     .medico-detail {
         display: flex;
         justify-content: center;
@@ -151,7 +152,31 @@ main {
     .menu-sobre-avaliacoes {
         display: flex;
         margin-top: 50px;
-    }
+      
+        a {
+          text-decoration: none;
+          font-family: 'Outfit', sans-serif;
+          font-weight: 400;
+          color: $text-color;
+          font-size: 18px;
+          cursor: pointer;
+          font-weight: bold;
+          padding-bottom: 5px;
+          margin-right: 50px;
+      
+          &:last-child {
+            margin-right: 0;
+          }
+      
+          &.active {
+            box-shadow: inset 0px -2px 0px 0px $primary-color;
+          }
+        }
+      }
+      
+      .sobre-avaliacoes-agendamento {
+        margin-top: 20px;
+      }
 
     .menu-sobre {
         text-decoration: none;
@@ -250,13 +275,19 @@ main {
 
         .avaliacao-item {
             margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .avaliacao-conteudo {
             display: flex;
             flex-direction: column;
         }
 
-        .avaliacao-dados {
+        .avaliacao-header {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 10px;
         }
 
@@ -265,14 +296,12 @@ main {
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
-            object-position: 100% 10%;
             margin-right: 15px;
         }
 
-        .name-data {
+        .avaliacao-info {
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
         }
 
         .paciente-name {
@@ -280,26 +309,67 @@ main {
             font-weight: 500;
             font-size: 18px;
             color: #015BB9;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .avaliacao-data {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 200;
-            font-size: 14px;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 2px;
         }
 
         .avaliacao-estrelas {
-            font-size: 18px;
             color: #ffd700;
-            margin-left: auto;
+            font-size: 18px;
         }
 
-        .avaliacao-comentario {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 300;
-            font-size: 16px;
-            padding: 5px 0 10px 65px; // Ajustado para alinhar com o nome do paciente
+        .avaliacao-comentario-acoes {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 65px;
+
+            p {
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            .avaliacao-acoes {
+                display: flex;
+                gap: 10px;
+
+                button {
+                    padding: 5px 10px;
+                    background-color: #f0f0f0;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+
+                    &:hover {
+                        background-color: #e0e0e0;
+                    }
+                }
+
+
+                .btn-alterar {
+                    background-color: #007bff;
+                    color: white;
+
+                    &:hover {
+                        background-color: #024fa1;
+                    }
+                }
+
+                .btn-excluir {
+                    background-color: #E83030;
+                    color: white;
+
+                    &:hover {
+                        background-color: #d81b1b;
+                    }
+                }
+            }
         }
 
         .btn-avaliar {
@@ -321,139 +391,46 @@ main {
             align-items: center;
             margin-top: 20px;
             font-family: 'Outfit', sans-serif;
-        
+
             button {
-              background-color: $primary-color;
-              color: white;
-              border: none;
-              padding: 8px 15px;
-              margin: 0 10px;
-              border-radius: 5px;
-              cursor: pointer;
-              font-family: 'Outfit', sans-serif;
-              font-size: 14px;
-              transition: background-color 0.3s ease;
-        
-              &:hover {
-                background-color: darken($primary-color, 10%);
-              }
-        
-              &:disabled {
-                background-color: #ccc;
-                cursor: not-allowed;
-              }
-            }
-        
-            span {
-              font-size: 16px;
-              color: $text-color;
-            }
-          }
-
-          .avaliacao-item {
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-          }
-          
-          .avaliacao-conteudo {
-            display: flex;
-            flex-direction: column;
-          }
-          
-          .avaliacao-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-          }
-          
-          .avaliacao-foto {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-          }
-          
-          .avaliacao-info {
-            display: flex;
-            flex-direction: column;
-          }
-          
-          .paciente-name {
-            font-weight: bold;
-            margin-bottom: 2px;
-          }
-          
-          .avaliacao-data {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 2px;
-          }
-          
-          .avaliacao-estrelas {
-            color: #ffd700;
-          }
-          
-          .avaliacao-comentario-acoes {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            
-            p {
-              flex: 1;
-              margin-right: 10px;
-            }
-            
-            .avaliacao-acoes {
-              display: flex;
-              gap: 10px;
-              
-              button {
-                padding: 5px 10px;
-                background-color: #f0f0f0;
-                border: 1px solid #ccc;
-                border-radius: 4px;
+                background-color: $primary-color;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                margin: 0 10px;
+                border-radius: 5px;
                 cursor: pointer;
-                transition: background-color 0.3s;
-                
-                &:hover {
-                  background-color: #e0e0e0;
-                }
-              }
-              
-              .btn-alterar {
-                background-color: #007bff;
-                color: white;
-                
-                &:hover {
-                  background-color: #024fa1;
-                }
-              }
-              
-              .btn-excluir {
-                background-color: #E83030;
-                color: white;
-                
-                &:hover {
-                  background-color: #d81b1b;
-                }
-              }
-            }
-          }
+                font-family: 'Outfit', sans-serif;
+                font-size: 14px;
+                transition: background-color 0.3s ease;
 
-          .caracteres-restantes {
+                &:hover {
+                    background-color: darken($primary-color, 10%);
+                }
+
+                &:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                }
+            }
+
+            span {
+                font-size: 16px;
+                color: $text-color;
+            }
+        }
+
+        .caracteres-restantes {
             font-size: 0.8em;
             color: #666;
             text-align: right;
             margin-top: 5px;
-          }
-          
-          .comentario-avaliacao {
+        }
+
+        .comentario-avaliacao {
             white-space: pre-wrap;
             word-wrap: break-word;
-          }
+        }
     }
 
     // Estilos para o modal de avaliação
@@ -531,6 +508,8 @@ main {
 
 
     //Avaliações
+
+    //Agendamento
 
     .column-direita article {
         background-color: $gray-bg;

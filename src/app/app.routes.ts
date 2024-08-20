@@ -50,6 +50,7 @@ export const routes: Routes = [
     },
     {
         path: "medico-detail/:id",
-        component: MedicoDetailComponent
+        component: MedicoDetailComponent,
+        canActivate: [AuthGuard]
     }
 ];
