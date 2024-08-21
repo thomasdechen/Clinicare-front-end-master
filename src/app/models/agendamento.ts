@@ -13,3 +13,5 @@ export interface Agendamento {
     pacienteNome: string;
     pacienteTelefone: string;
   }
+
+  
