@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AgendamentoService } from '../../services/agendamento.service';
 import { MedicoService } from '../../services/medico.service';
 import { Agendamento } from '../../models/agendamento';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-default-profile-layout',
@@ -34,7 +35,8 @@ export class DefaultProfileLayoutComponent implements OnInit {
   numAvaliacoes: number = 0;
 
   constructor(private toastr: ToastrService, private userService: UserService, private router: Router, private agendamentoService: AgendamentoService,
-    private medicoService: MedicoService) { }
+    private medicoService: MedicoService,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.checkLoginStatus();
@@ -42,6 +44,16 @@ export class DefaultProfileLayoutComponent implements OnInit {
       this.fetchUserProfile();
       this.fetchAgendamentos();
     }
+    this.agendamentos_reverse();
+  }
+
+  agendamentos_reverse() {
+    this.agendamentos = this.agendamentos
+      .map(agendamento => ({
+        ...agendamento,
+        status: this.checkAgendamentoStatus(agendamento)
+      }))
+      .reverse();
   }
 
   setActiveSection(section: string): void {
@@ -57,8 +69,14 @@ export class DefaultProfileLayoutComponent implements OnInit {
     if (userId) {
       this.agendamentoService.getAgendamentosDoPaciente(userId).subscribe(
         (agendamentos) => {
-          this.agendamentos = agendamentos;
-          this.calcularMediaENumeroAvaliacoes(agendamentos);
+          this.agendamentos = agendamentos
+            .map(agendamento => ({
+              ...agendamento,
+              status: this.checkAgendamentoStatus(agendamento)
+            }))
+            .reverse(); // Inverte a ordem dos agendamentos
+
+          this.calcularMediaENumeroAvaliacoes(this.agendamentos);
         },
         (error) => {
           console.error('Erro ao buscar agendamentos do paciente:', error);
@@ -71,10 +89,37 @@ export class DefaultProfileLayoutComponent implements OnInit {
     }
   }
 
+
+  checkAgendamentoStatus(agendamento: Agendamento): string {
+    const now = new Date();
+    const agendamentoDate = new Date(agendamento.dia + 'T' + agendamento.hora);
+
+    if (agendamento.status === 'Cancelado') {
+      return 'Cancelado';
+    } else if (agendamentoDate < now) {
+      return 'Concluído';
+    } else {
+      return 'Agendado';
+    }
+  }
+
+  cancelarConsulta(agendamentoId: number) {
+    this.agendamentoService.cancelarAgendamento(agendamentoId).subscribe();
+    this.cdr.detectChanges();
+
+    const agendamento = this.agendamentos.find(a => a.id === agendamentoId);
+    if (agendamento) {
+      agendamento.status = 'Cancelado';
+    }
+    
+    this.toastr.success('Consulta cancelada com sucesso');
+
+  }
+
   calcularMediaENumeroAvaliacoes(agendamentos: Agendamento[]) {
     let somaEstrelas = 0;
     let numAvaliacoes = 0;
-  
+
     agendamentos.forEach((agendamento) => {
       this.medicoService.buscarMedicoPorId(agendamento.idMedico.toString()).subscribe(
         (medico) => {
@@ -93,97 +138,97 @@ export class DefaultProfileLayoutComponent implements OnInit {
     });
   }
 
-fetchUserProfile() {
-  this.userService.getUserProfile().subscribe(
-    (data) => {
-      this.userProfile = data;
-      this.updateProfileView();
-    },
-    (error) => {
-      console.error('Erro ao buscar perfil do usuário:', error);
-      // Lógica de tratamento de erro, se necessário
-    }
-  );
-}
-
-updateProfileView() {
-  if (this.userProfile.role === 'paciente') {
-    this.showBloodType = true;
-    this.buttonLabel = 'Meus Agendamentos';
-  } else if (this.userProfile.role === 'medico') {
-    this.showBloodType = false;
-    this.showEspecialidade = true;
-    this.buttonLabel = 'Meus Compromissos';
-  } else if (this.userProfile.role === 'secretario') {
-    this.showBloodType = false;
-    this.showEspecialidade = false;
-    this.buttonLabel = 'Meus Compromissos';
+  fetchUserProfile() {
+    this.userService.getUserProfile().subscribe(
+      (data) => {
+        this.userProfile = data;
+        this.updateProfileView();
+      },
+      (error) => {
+        console.error('Erro ao buscar perfil do usuário:', error);
+        // Lógica de tratamento de erro, se necessário
+      }
+    );
   }
-}
 
-saveProfile() {
-  this.fetchUserProfile();
-  this.onSave.emit();
-  this.fetchUserProfile();
-  this.fetchUserProfile();
-  this.fetchUserProfile();
-  this.fetchUserProfile();
-  this.fetchUserProfile();
-  this.fetchUserProfile();
-}
-
-logout() {
-  sessionStorage.setItem('logout-message', 'Logout realizado com sucesso!');
-  sessionStorage.removeItem('auth-token');
-  sessionStorage.removeItem('username');
-  sessionStorage.removeItem('id');
-  window.location.href = '/login';
-}
-
-delete () {
-  sessionStorage.setItem('delete-message', 'Conta deletada com sucesso!');
-  sessionStorage.removeItem('auth-token');
-  sessionStorage.removeItem('username');
-  sessionStorage.removeItem('id');
-  window.location.href = '/login';
-}
-
-deleteProfile() {
-  if (confirm('Tem certeza que deseja deletar sua conta?')) {
-    switch (this.userProfile.role) {
-      case 'paciente':
-      case 'medico':
-      case 'secretario':
-        this.userService.deleteUserProfile().subscribe(
-          () => {
-            this.delete();
-          },
-          (error) => {
-            console.error(`Erro ao deletar conta de ${this.userProfile.role}:`, error);
-            this.toastr.error('Erro ao deletar conta, digite a senha antes de deletar!');
-          }
-        );
-        break;
-      default:
-        console.error('Tipo de usuário desconhecido.');
-        break;
+  updateProfileView() {
+    if (this.userProfile.role === 'paciente') {
+      this.showBloodType = true;
+      this.buttonLabel = 'Meus Agendamentos';
+    } else if (this.userProfile.role === 'medico') {
+      this.showBloodType = false;
+      this.showEspecialidade = true;
+      this.buttonLabel = 'Meus Compromissos';
+    } else if (this.userProfile.role === 'secretario') {
+      this.showBloodType = false;
+      this.showEspecialidade = false;
+      this.buttonLabel = 'Meus Compromissos';
     }
   }
-}
 
-submit() {
-  this.onSubmit.emit();
-}
+  saveProfile() {
+    this.fetchUserProfile();
+    this.onSave.emit();
+    this.fetchUserProfile();
+    this.fetchUserProfile();
+    this.fetchUserProfile();
+    this.fetchUserProfile();
+    this.fetchUserProfile();
+    this.fetchUserProfile();
+  }
 
-navigate() {
-  this.onNavigate.emit();
-}
+  logout() {
+    sessionStorage.setItem('logout-message', 'Logout realizado com sucesso!');
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('id');
+    window.location.href = '/login';
+  }
 
-entrar() {
-  this.onEntrar.emit();
-}
+  delete() {
+    sessionStorage.setItem('delete-message', 'Conta deletada com sucesso!');
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('id');
+    window.location.href = '/login';
+  }
 
-goToProfile() {
-  this.router.navigate(['/profile']);
-}
+  deleteProfile() {
+    if (confirm('Tem certeza que deseja deletar sua conta?')) {
+      switch (this.userProfile.role) {
+        case 'paciente':
+        case 'medico':
+        case 'secretario':
+          this.userService.deleteUserProfile().subscribe(
+            () => {
+              this.delete();
+            },
+            (error) => {
+              console.error(`Erro ao deletar conta de ${this.userProfile.role}:`, error);
+              this.toastr.error('Erro ao deletar conta, digite a senha antes de deletar!');
+            }
+          );
+          break;
+        default:
+          console.error('Tipo de usuário desconhecido.');
+          break;
+      }
+    }
+  }
+
+  submit() {
+    this.onSubmit.emit();
+  }
+
+  navigate() {
+    this.onNavigate.emit();
+  }
+
+  entrar() {
+    this.onEntrar.emit();
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
+  }
 }
