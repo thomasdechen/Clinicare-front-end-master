@@ -11,6 +11,10 @@ import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import ptBr from '@angular/common/locales/pt';
+registerLocaleData(ptBr)
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideNgxMask(), provideAnimationsAsync(),
     MatNativeDateModule,
     BrowserAnimationsModule,
-    provideNativeDateAdapter()
+    provideNativeDateAdapter(),
+    { provide: LOCALE_ID, useValue: 'pt' }
   ]
 };

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DisponibilidadeService {
+  
 
   private baseUrl = 'http://localhost:8080/disponibilidade';
 
@@ -26,4 +27,6 @@ export class DisponibilidadeService {
   agendarConsulta(agendamentoData: any): Observable<any> {
     return this.http.post('http://localhost:8080/agendamentos', agendamentoData);
   }
+
+  
 }
