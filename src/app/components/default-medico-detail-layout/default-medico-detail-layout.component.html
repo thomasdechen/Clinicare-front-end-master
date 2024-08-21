@@ -33,6 +33,12 @@
         <article class="dados-medico">
           <h2 class="nome">{{ medico.name }}</h2>
           <h3 class="especialidade">{{ medico.especialidade }}</h3>
+          <div class="avaliacao-info">
+            <span class="avaliacao-estrelas-media">
+              <i class="fas fa-star" style="color: #ffd700; font-size: 18px;"></i> {{ mediaAvaliacoes }}
+            </span>
+            <span class="num-avaliacoes">({{ numAvaliacoes }} avaliações)</span>
+          </div>
         </article>
       </section>
       <section class="row-2">
