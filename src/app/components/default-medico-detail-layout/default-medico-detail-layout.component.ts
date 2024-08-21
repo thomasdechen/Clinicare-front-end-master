@@ -9,11 +9,18 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DisponibilidadeService } from '../../services/disponibilidade.service';
 import { AvaliacaoService } from '../../services/avaliacao.service';
 import { Agendamento } from '../../models/agendamento';
+import { DatePipe } from '@angular/common';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import ptBr from '@angular/common/locales/pt';
+registerLocaleData(ptBr)
 
 @Component({
   selector: 'app-default-medico-detail-layout',
   templateUrl: './default-medico-detail-layout.component.html',
-  styleUrls: ['./default-medico-detail-layout.component.scss']
+  styleUrls: ['./default-medico-detail-layout.component.scss'],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt' }]
+  
 })
 export class DefaultMedicoDetailLayoutComponent implements OnInit {
   @Input() title: string = "";
@@ -24,6 +31,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   @Output("navigate") onNavigate = new EventEmitter();
   @Output("navigate-medico") onNavigateMedico = new EventEmitter();
   @Output("entrar") onEntrar = new EventEmitter();
+
+  
 
   availableDates: Set<string> = new Set();
   availableTimes: string[] = [];
@@ -56,7 +65,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   paciente: any;
   selectedDate: string = '';
   selectedTime: string = '';
-
+  
+  updateAgendamentoSection: boolean = false;
 
   myFilter = (d: Date | null): boolean => {
     const date = (d || new Date()).toISOString().split('T')[0];
@@ -73,7 +83,9 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     private agendamentoService: AgendamentoService,
     private disponibilidadeService: DisponibilidadeService,
     private fb: FormBuilder,
-    private avaliacaoService: AvaliacaoService
+    private avaliacaoService: AvaliacaoService,
+    private datePipe: DatePipe
+  
   ) {
     this.agendamentoForm = this.fb.group({
       dataConsulta: ['']
@@ -81,8 +93,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadAvailableDates();
     this.atualizarDisponibilidade();
+    this.loadAvailableDates();
     this.getMedicoDetail();
     this.getPacienteDetail();
     this.checkLoginStatus();
@@ -104,7 +116,6 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     //   comentario: 'Avaliação de teste',
     //   criadoEm: new Date()
     // });
-
     
   }
 
@@ -206,7 +217,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     this.agendamentoService.criarAgendamento(agendamento).subscribe(
       () => {
         // Exibir uma mensagem de sucesso ou redirecionar para outra página
-        this.router.navigate(['/perfil']);
+        this.router.navigate(['/profile']);
+        this.toastr.success('Agendamento realizado com sucesso!');
       },
       error => {
         console.error('Erro ao agendar consulta:', error);
@@ -215,22 +227,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
     );
   }
 
-
-  loadAvailableDates() {
-    const medicoId = this.route.snapshot.paramMap.get('id');
-    if (medicoId) {
-      this.agendamentoService.getAvailableDates(medicoId).subscribe(
-        dates => {
-          this.availableDates = new Set(dates);
-        },
-        error => {
-          console.error('Erro ao carregar datas disponíveis:', error);
-        }
-      );
-    }
-  }
-
   onDateChange(event: any) {
+    const selectedDate = this.datePipe.transform(event.value, 'dd/MM/yyyy');
     const date = event.value.toISOString().split('T')[0];
     this.selectedDate = date;
     this.loadAvailableTimes(date);
@@ -290,6 +288,20 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
         },
         error => {
           console.error('Erro ao atualizar disponibilidade:', error);
+        }
+      );
+    }
+  }
+
+    loadAvailableDates() {
+    const medicoId = this.route.snapshot.paramMap.get('id');
+    if (medicoId) {
+      this.agendamentoService.getAvailableDates(medicoId).subscribe(
+        dates => {
+          this.availableDates = new Set(dates);
+        },
+        error => {
+          console.error('Erro ao carregar datas disponíveis:', error);
         }
       );
     }

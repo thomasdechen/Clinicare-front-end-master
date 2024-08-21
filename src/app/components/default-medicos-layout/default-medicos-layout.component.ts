@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { MedicoService } from '../../services/medico.service';
+import { DisponibilidadeService } from '../../services/disponibilidade.service';
 
 @Component({
     selector: 'app-default-medicos-layout',
@@ -29,6 +30,7 @@ export class DefaultMedicosLayoutComponent implements OnInit {
         private toastr: ToastrService,
         private userService: UserService,
         private router: Router,
+        private disponibilidadeService: DisponibilidadeService,
         private medicoService: MedicoService
     ) {}
 
@@ -57,16 +59,29 @@ export class DefaultMedicosLayoutComponent implements OnInit {
 
     carregarMedicos() {
         this.medicoService.buscarMedicos().subscribe(
-            (data) => {
-                console.log(data); 
-                this.medicos = data; 
-                this.atualizarMedicosExibidos();
+          (data) => {
+            this.medicos = data;
+            this.atualizarMedicosExibidos();
+            this.atualizarDisponibilidadeMedicos(); // Chamar o método para atualizar a disponibilidade
+          },
+          (error) => {
+            console.error('Erro ao buscar médicos:', error);
+          }
+        );
+      }
+      
+      atualizarDisponibilidadeMedicos() {
+        this.medicos.forEach((medico) => {
+          this.disponibilidadeService.atualizarDisponibilidade(medico._id).subscribe(
+            () => {
+              console.log(`Disponibilidade atualizada para o médico ${medico.name}`);
             },
             (error) => {
-                console.error('Erro ao buscar médicos:', error);
+              console.error(`Erro ao atualizar a disponibilidade do médico ${medico.name}:`, error);
             }
-        );
-    }
+          );
+        });
+      }
 
     buscarMedicosPorNome(event: Event) {
         const inputElement = event.target as HTMLInputElement;
@@ -91,6 +106,7 @@ export class DefaultMedicosLayoutComponent implements OnInit {
     verDetalhesMedico(medico: any) {
         const medicoId = medico._id; 
         console.log('ID do médico:', medicoId);
+        
         if (medicoId) {
             this.router.navigate([`/medico-detail/${medicoId}`]);
             this.gotoTop();
@@ -98,6 +114,7 @@ export class DefaultMedicosLayoutComponent implements OnInit {
             console.error('ID do médico é undefined');
         }
     }
+    
 
     gotoTop() {
         const scrollDuration = 500;

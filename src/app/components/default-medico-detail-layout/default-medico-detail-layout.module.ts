@@ -11,8 +11,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import localePtBr from '@angular/common/locales/pt';
-
 import { registerLocaleData } from '@angular/common';
+import { DatePipe } from '@angular/common';
+
+
 registerLocaleData(localePtBr);
 
 @NgModule({
@@ -33,7 +35,8 @@ registerLocaleData(localePtBr);
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
-    provideNativeDateAdapter()
+    provideNativeDateAdapter(),
+    DatePipe
   ]
 })
 export class DefaultMedicoDetailLayoutModule { }
