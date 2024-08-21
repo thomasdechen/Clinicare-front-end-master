@@ -99,16 +99,21 @@ export class ProfileComponent implements OnInit {
         
         if (oldEmail !== updatedUser.email) {
           this.handleEmailChange(updatedUser.email);
-        } else {
+        } 
+        else {
           setTimeout(() => {
             window.location.reload();
-          }, 1500);
+            
+          }, 1000);
+          
         }
       },
       error: () => {
         this.toastService.error('Erro ao atualizar perfil, digite a senha corretamente!');
       }
+      
     });
+    
   }
   
   handleEmailChange(newEmail: string): void {

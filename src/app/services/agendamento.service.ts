@@ -50,4 +50,8 @@ export class AgendamentoService {
       );
   }
 
+  getAgendamentosDoPaciente(pacienteId: string): Observable<Agendamento[]> {
+    return this.http.get<Agendamento[]>(`${this.baseUrl}/paciente/${pacienteId}`);
+  }
+
 }

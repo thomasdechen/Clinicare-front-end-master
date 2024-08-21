@@ -7,4 +7,9 @@ export interface Agendamento {
     status: string;
     local: string;
     especialidadeMedico: string;
+    preco: number;
+    medicoTelefone: string;
+    medicoNome: string;
+    pacienteNome: string;
+    pacienteTelefone: string;
   }

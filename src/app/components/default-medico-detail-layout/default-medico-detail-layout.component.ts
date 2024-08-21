@@ -197,33 +197,52 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   agendar(): void {
     const medicoId = this.route.snapshot.paramMap.get('id');
     const pacienteId = sessionStorage.getItem('id');
-
     if (!medicoId || !pacienteId) {
-      // Exibir uma mensagem de erro ou realizar alguma ação apropriada
+      this.toastr.error('Dados do médico ou paciente não encontrados');
       return;
     }
-
-    const agendamento: Agendamento = {
-      idMedico: parseInt(medicoId),
-      idPaciente: parseInt(pacienteId),
-      dia: this.selectedDate,
-      hora: this.selectedTime,
-      //preco: this.medico.preco,
-      status: 'Agendado',
-      local: this.medico.endereco,
-      especialidadeMedico: this.medico.especialidade,
-      //nomeMedico: this.medico.nome
-    };
-
-    this.agendamentoService.criarAgendamento(agendamento).subscribe(
-      () => {
-        // Exibir uma mensagem de sucesso ou redirecionar para outra página
-        this.router.navigate(['/profile']);
-        this.toastr.success('Agendamento realizado com sucesso!');
+  
+    // Buscar dados do médico
+    this.medicoService.buscarMedicoPorId(medicoId).subscribe(
+      (medico) => {
+        // Buscar dados do paciente
+        this.userService.getPacienteById(pacienteId).subscribe(
+          (paciente) => {
+            const agendamento: Agendamento = {
+              idMedico: parseInt(medicoId),
+              idPaciente: parseInt(pacienteId),
+              dia: this.selectedDate,
+              hora: this.selectedTime,
+              preco: this.medico.preco,
+              status: 'Agendado',
+              local: medico.endereco,
+              especialidadeMedico: medico.especialidade,
+              medicoNome: medico.name,
+              pacienteNome: paciente.name,
+              medicoTelefone: medico.telefone,
+              pacienteTelefone: paciente.telefone
+            };
+  
+            this.agendamentoService.criarAgendamento(agendamento).subscribe(
+              () => {
+                this.router.navigate(['/profile']);
+                this.toastr.success('Agendamento realizado com sucesso!');
+              },
+              error => {
+                console.error('Erro ao agendar consulta:', error);
+                this.toastr.error('Erro ao agendar consulta');
+              }
+            );
+          },
+          error => {
+            console.error('Erro ao buscar dados do paciente:', error);
+            this.toastr.error('Erro ao buscar dados do paciente');
+          }
+        );
       },
       error => {
-        console.error('Erro ao agendar consulta:', error);
-        // Exibir uma mensagem de erro
+        console.error('Erro ao buscar dados do médico:', error);
+        this.toastr.error('Erro ao buscar dados do médico');
       }
     );
   }
