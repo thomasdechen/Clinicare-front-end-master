@@ -46,38 +46,35 @@
       </div>
       <div class="form-agendamento" *ngIf="activeSection === 'agendamentos'">
         <h2>{{ buttonLabel }}</h2>
-        <div class="agendamentos-table" *ngIf="agendamentos.length > 0">
-          <table>
-            <thead>
-              <tr>
-                <th>Médico</th>
-                <th>Especialidade</th>
-                <th>Avaliação</th>
-                <th>Local</th>
-                <th>Data</th>
-                <th>Hora</th>
-                <th>Telefone</th>
-                <th>Preço</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let agendamento of agendamentos">
-                <td>{{ agendamento.medicoNome }}</td>
-                <td>{{ agendamento.especialidadeMedico }}</td>
-                <td>{{ agendamento.local }}</td>
-                <td>{{ agendamento.dia }}</td>
-                <td>{{ agendamento.hora }}</td>
-                <td>{{ agendamento.medicoTelefone }}</td>
-                <td>{{ agendamento.preco }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="agendamentos-grid" *ngIf="agendamentos.length > 0">
+          <div class="agendamento-card" *ngFor="let agendamento of agendamentos">
+            <div class="card-header">
+              <h3>{{ agendamento.medicoNome }}</h3>
+              <p>{{ agendamento.especialidadeMedico }}</p>
+            </div>
+            <div class="card-body">
+              <p><strong>Local:</strong> {{ agendamento.local }}</p>
+              <p><strong>Data:</strong> {{ agendamento.dia | date:'dd/MM/yyyy' }}</p>
+              <p><strong>Hora:</strong> {{ agendamento.hora }}</p>
+              <p><strong>Telefone:</strong> {{ agendamento.medicoTelefone }}</p>
+              <p><strong>Status:</strong> {{ agendamento.status }}</p>
+            </div>
+            <div class="card-footer">
+              <p class="price">R$ {{ agendamento.preco }}</p>
+              <button *ngIf="agendamento.id && agendamento.status === 'Agendado'" (click)="cancelarConsulta(agendamento.id)" class="cancel-btn">
+                Cancelar
+              </button>
+              
+            </div>
+          </div>
         </div>
         <div *ngIf="agendamentos.length === 0">
           <p>Nenhum agendamento encontrado.</p>
         </div>
+        
       </div>
 
+      
       <div class="form-perfil" *ngIf="activeSection === 'info'">
         <h2>{{ title }}</h2>
         <ng-content></ng-content>

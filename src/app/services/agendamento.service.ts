@@ -54,4 +54,8 @@ export class AgendamentoService {
     return this.http.get<Agendamento[]>(`${this.baseUrl}/paciente/${pacienteId}`);
   }
 
+  cancelarAgendamento(agendamentoId: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}/cancelar/${agendamentoId}`, {});
+  }
+
 }
