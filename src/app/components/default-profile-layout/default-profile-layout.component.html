@@ -14,7 +14,9 @@
       </section>
       <section class="entrar col-3">
         <ng-container *ngIf="isLoggedIn; else notLoggedIn">
-          <a href="/profile"><img class="profile-image-header" [src]="userProfile?.foto || 'caminho/para/imagem/default'" alt="Foto de perfil" (click)="goToProfile()"></a>
+          <a href="/profile"><img class="profile-image-header"
+              [src]="userProfile?.foto || 'caminho/para/imagem/default'" alt="Foto de perfil"
+              (click)="goToProfile()"></a>
         </ng-container>
         <ng-template #notLoggedIn>
           <a (click)="navigate()" class="entrar-button">Entrar</a>
@@ -39,15 +41,50 @@
 
     <section class="direita-perfil">
       <div class="menu-perfil">
-        <a href="/profile2"><button class="btn-agend">{{ buttonLabel }}</button></a>
-        <a href="/profile"><button class="btn-info">Perfil(Informações)</button></a><!-- Meus Agendamentos e Compromissos   -->
+        <a (click)="setActiveSection('agendamentos')"><button class="btn-agend">{{ buttonLabel }}</button></a>
+        <a (click)="setActiveSection('info')"><button class="btn-info">Perfil(Informações)</button></a>
       </div>
-      <div class="form-perfil">
+      <div class="form-agendamento" *ngIf="activeSection === 'agendamentos'">
+        <h2>{{ buttonLabel }}</h2>
+        <div class="agendamentos-table" *ngIf="agendamentos.length > 0">
+          <table>
+            <thead>
+              <tr>
+                <th>Médico</th>
+                <th>Especialidade</th>
+                <th>Avaliação</th>
+                <th>Local</th>
+                <th>Data</th>
+                <th>Hora</th>
+                <th>Telefone</th>
+                <th>Preço</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let agendamento of agendamentos">
+                <td>{{ agendamento.medicoNome }}</td>
+                <td>{{ agendamento.especialidadeMedico }}</td>
+                <td>{{ agendamento.local }}</td>
+                <td>{{ agendamento.dia }}</td>
+                <td>{{ agendamento.hora }}</td>
+                <td>{{ agendamento.medicoTelefone }}</td>
+                <td>{{ agendamento.preco }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="agendamentos.length === 0">
+          <p>Nenhum agendamento encontrado.</p>
+        </div>
+      </div>
+
+      <div class="form-perfil" *ngIf="activeSection === 'info'">
         <h2>{{ title }}</h2>
         <ng-content></ng-content>
         <button class="btn-save" (click)="saveProfile()" [disabled]="disablePrimaryBtn">{{ primaryBtnText }}</button>
       </div>
     </section>
+
   </section>
 
   <footer>
