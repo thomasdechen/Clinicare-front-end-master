@@ -53,6 +53,14 @@ export class AgendamentoService {
   getAgendamentosDoPaciente(pacienteId: string): Observable<Agendamento[]> {
     return this.http.get<Agendamento[]>(`${this.baseUrl}/paciente/${pacienteId}`);
   }
+  
+  getAgendamentosDoMedico(medicoId: string): Observable<Agendamento[]> {
+    return this.http.get<Agendamento[]>(`${this.baseUrl}/medico/${medicoId}`);
+  }
+  
+  getAgendamentosDosMedicosDoSecretario(secretarioId: string): Observable<Agendamento[]> {
+    return this.http.get<Agendamento[]>(`${this.baseUrl}/secretario/${secretarioId}`);
+  }
 
   cancelarAgendamento(agendamentoId: number): Observable<any> {
     return this.http.put(`${this.baseUrl}/cancelar/${agendamentoId}`, {});

@@ -44,7 +44,7 @@ export class DefaultProfileLayoutComponent implements OnInit {
       this.fetchUserProfile();
       this.fetchAgendamentos();
     }
-    this.agendamentos_reverse();
+    //this.agendamentos_reverse();
   }
 
   agendamentos_reverse() {
@@ -66,28 +66,108 @@ export class DefaultProfileLayoutComponent implements OnInit {
 
   fetchAgendamentos() {
     const userId = sessionStorage.getItem('id');
-    if (userId) {
-      this.agendamentoService.getAgendamentosDoPaciente(userId).subscribe(
-        (agendamentos) => {
-          this.agendamentos = agendamentos
-            .map(agendamento => ({
-              ...agendamento,
-              status: this.checkAgendamentoStatus(agendamento)
-            }))
-            .reverse(); // Inverte a ordem dos agendamentos
-
-          this.calcularMediaENumeroAvaliacoes(this.agendamentos);
-        },
-        (error) => {
-          console.error('Erro ao buscar agendamentos do paciente:', error);
-          this.toastr.error('Erro ao buscar agendamentos');
-        }
-      );
+    const userRole = sessionStorage.getItem('role');
+  
+    if (userId && userRole) {
+      switch (userRole) {
+        case 'paciente':
+          this.fetchAgendamentosDoPaciente(userId);
+          break;
+        case 'medico':
+          this.fetchAgendamentosDoMedico(userId);
+          break;
+        case 'secretario':
+          this.fetchAgendamentosDosMedicosDoSecretario(userId);
+          break;
+        default:
+          console.error('Função de usuário não reconhecida');
+          this.toastr.error('Função de usuário não reconhecida');
+          break;
+      }
     } else {
       console.error('Usuário não logado. Não é possível buscar os agendamentos.');
       this.toastr.error('Usuário não logado');
     }
   }
+  
+
+  fetchAgendamentosDoPaciente(pacienteId: string) {
+    this.agendamentoService.getAgendamentosDoPaciente(pacienteId).subscribe(
+      (agendamentos) => {
+        this.agendamentos = agendamentos
+          .map(agendamento => ({
+            ...agendamento,
+            dia: this.formatarData(agendamento.dia),
+            status: this.checkAgendamentoStatus(agendamento)
+          }))
+          .reverse();
+  
+        this.calcularMediaENumeroAvaliacoes(this.agendamentos);
+      },
+      (error) => {
+        console.error('Erro ao buscar agendamentos do paciente:', error);
+        this.toastr.error('Erro ao buscar agendamentos');
+      }
+    );
+  }
+  
+  fetchAgendamentosDoMedico(medicoId: string) {
+    this.agendamentoService.getAgendamentosDoMedico(medicoId).subscribe(
+      (agendamentos) => {
+        this.agendamentos = agendamentos
+          .map(agendamento => ({
+            ...agendamento,
+            dia: this.formatarData(agendamento.dia),
+            status: this.checkAgendamentoStatus(agendamento)
+          }))
+          .reverse();
+      },
+      (error) => {
+        console.error('Erro ao buscar agendamentos do médico:', error);
+        this.toastr.error('Erro ao buscar agendamentos');
+      }
+    );
+  }
+  
+  fetchAgendamentosDosMedicosDoSecretario(secretarioId: string) {
+    this.userService.getMedicoIdFromSecretario(secretarioId).subscribe(
+      (medicoId) => {
+        if (medicoId) {
+          this.agendamentoService.getAgendamentosDosMedicosDoSecretario(medicoId.toString()).subscribe(
+            (agendamentos) => {
+              this.agendamentos = agendamentos
+                .map(agendamento => ({
+                  ...agendamento,
+                  dia: this.formatarData(agendamento.dia),
+                  status: this.checkAgendamentoStatus(agendamento)
+                }))
+                .reverse();
+            },
+            (error) => {
+              console.error('Erro ao buscar agendamentos dos médicos do secretário:', error);
+              this.toastr.error('Erro ao buscar agendamentos');
+            }
+          );
+        } else {
+          console.error('Não foi possível obter o ID do médico vinculado ao secretário.');
+          this.toastr.error('Não foi possível obter o ID do médico vinculado ao secretário.');
+        }
+      },
+      (error) => {
+        console.error('Erro ao obter o ID do médico vinculado ao secretário:', error);
+        this.toastr.error('Erro ao obter o ID do médico vinculado ao secretário.');
+      }
+    );
+  }
+  
+  formatarData(data: string): string {
+    const date = new Date(data);
+    const dia = (date.getDate() + 1).toString().padStart(2, '0');
+    const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+    const ano = date.getFullYear().toString();
+    return `${dia}/${mes}/${ano}`;
+  }
+
 
 
   checkAgendamentoStatus(agendamento: Agendamento): string {
@@ -111,7 +191,6 @@ export class DefaultProfileLayoutComponent implements OnInit {
     if (agendamento) {
       agendamento.status = 'Cancelado';
     }
-    
     this.toastr.success('Consulta cancelada com sucesso');
 
   }

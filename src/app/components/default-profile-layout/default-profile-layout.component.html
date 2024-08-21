@@ -49,14 +49,22 @@
         <div class="agendamentos-grid" *ngIf="agendamentos.length > 0">
           <div class="agendamento-card" *ngFor="let agendamento of agendamentos">
             <div class="card-header">
-              <h3>{{ agendamento.medicoNome }}</h3>
-              <p>{{ agendamento.especialidadeMedico }}</p>
+              <h3 *ngIf="userProfile.role === 'paciente'">{{ agendamento.medicoNome }}</h3>
+              <h3 *ngIf="userProfile.role === 'medico'">{{ agendamento.pacienteNome }}</h3>
+              <h3 *ngIf="userProfile.role === 'secretario'">
+                {{ agendamento.medicoNome }}
+              </h3>
+              <h3 *ngIf="userProfile.role === 'secretario'">
+                Paciente: {{ agendamento.pacienteNome }}
+              </h3>
             </div>
             <div class="card-body">
               <p><strong>Local:</strong> {{ agendamento.local }}</p>
-              <p><strong>Data:</strong> {{ agendamento.dia | date:'dd/MM/yyyy' }}</p>
+              <p><strong>Data:</strong> {{ agendamento.dia }}</p>
               <p><strong>Hora:</strong> {{ agendamento.hora }}</p>
-              <p><strong>Telefone:</strong> {{ agendamento.medicoTelefone }}</p>
+              <p *ngIf="userProfile.role !== 'paciente'">
+                <strong>Telefone do Paciente:</strong> {{ agendamento.pacienteTelefone }}
+              </p>
               <p><strong>Status:</strong> {{ agendamento.status }}</p>
             </div>
             <div class="card-footer">
@@ -64,14 +72,12 @@
               <button *ngIf="agendamento.id && agendamento.status === 'Agendado'" (click)="cancelarConsulta(agendamento.id)" class="cancel-btn">
                 Cancelar
               </button>
-              
             </div>
           </div>
         </div>
         <div *ngIf="agendamentos.length === 0">
           <p>Nenhum agendamento encontrado.</p>
         </div>
-        
       </div>
 
       

@@ -57,6 +57,21 @@ export class UserService {
     return this.http.get<any>(endpoint, { headers });
   }
 
+  getMedicoIdFromSecretario(secretarioId: string): Observable<number | null> {
+    const token = sessionStorage.getItem('auth-token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  
+    return this.http.get<any>(`${this.apiUrl}/secretario/${secretarioId}`)
+      .pipe(
+        map(response => response.medicoid || null)
+      );
+  }
+
   updateUserProfile(profileData: any): Observable<any> {
     const token = sessionStorage.getItem('auth-token');
     const id = sessionStorage.getItem('id');
