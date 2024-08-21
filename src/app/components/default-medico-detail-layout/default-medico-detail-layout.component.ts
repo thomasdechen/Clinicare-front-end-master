@@ -32,7 +32,8 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
   @Output("navigate-medico") onNavigateMedico = new EventEmitter();
   @Output("entrar") onEntrar = new EventEmitter();
 
-  
+  mediaAvaliacoes: number = 0;
+  numAvaliacoes: number = 0;
 
   availableDates: Set<string> = new Set();
   availableTimes: string[] = [];
@@ -319,6 +320,7 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
         (data) => {
           // console.log('Avaliações recebidas:', data);
           // console.log('ID do paciente logado:', pacienteLogadoId);
+          this.calcularMediaENumeroAvaliacoes(data);
 
           const avaliacaoPacienteLogado = data.find(av => av.idPaciente === pacienteLogadoId);
           const outrasAvaliacoes = data.filter(av => av.idPaciente !== pacienteLogadoId);
@@ -342,6 +344,17 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
           console.error('Erro ao buscar avaliações:', error);
         }
       );
+    }
+  }
+
+  calcularMediaENumeroAvaliacoes(avaliacoes: any[]) {
+    if (avaliacoes.length > 0) {
+      const somaEstrelas = avaliacoes.reduce((total, avaliacao) => total + avaliacao.estrelas, 0);
+      this.mediaAvaliacoes = somaEstrelas / avaliacoes.length;
+      this.numAvaliacoes = avaliacoes.length;
+    } else {
+      this.mediaAvaliacoes = 0;
+      this.numAvaliacoes = 0;
     }
   }
 
@@ -524,6 +537,10 @@ export class DefaultMedicoDetailLayoutComponent implements OnInit {
 
   resetStars() {
     this.hoveredStar = 0;
+  }
+
+  getEstrelaImageUrl(media: number): string {
+      return 'assets/estrela_amarela.png';
   }
 
   navigate() {
