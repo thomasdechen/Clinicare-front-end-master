@@ -100,7 +100,7 @@ export class DefaultProfileLayoutComponent implements OnInit {
             dia: this.formatarData(agendamento.dia),
             status: this.checkAgendamentoStatus(agendamento)
           }))
-          .reverse();
+          //.reverse();
   
         this.calcularMediaENumeroAvaliacoes(this.agendamentos);
       },
